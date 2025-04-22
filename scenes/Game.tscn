@@ -1,0 +1,800 @@
+[gd_scene load_steps=11 format=3 uid="uid://dh5bep4wwtggd"]
+
+[ext_resource type="Texture2D" uid="uid://vcaps1or0ws1" path="res://assets/images/background.png" id="1_ibkli"]
+[ext_resource type="Script" uid="uid://cugjxceim0v8d" path="res://scripts/Game.gd" id="1_qbsmt"]
+[ext_resource type="PackedScene" uid="uid://bniga06ym5etf" path="res://scenes/Tile.tscn" id="2_cpr0p"]
+[ext_resource type="FontFile" uid="uid://cv053v58v05nd" path="res://assets/fonts/Roboto/Roboto-VariableFont_wdth,wght.ttf" id="4_78awf"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_78awf"]
+
+[sub_resource type="Theme" id="Theme_78awf"]
+default_font = ExtResource("4_78awf")
+default_font_size = 64
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s0nni"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="Animation" id="Animation_s0nni"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("GameArea/Controls/TurnIndicator:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_78awf"]
+resource_name = "show_turn"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("GameArea/Controls/TurnIndicator:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 3.03143, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_aug50"]
+_data = {
+&"RESET": SubResource("Animation_s0nni"),
+&"show_turn": SubResource("Animation_78awf")
+}
+
+[node name="Game" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_qbsmt")
+tile_scene = ExtResource("2_cpr0p")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -79.5
+offset_bottom = 79.5
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_ibkli")
+stretch_mode = 6
+
+[node name="GameArea" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="Controls" type="Control" parent="GameArea"]
+layout_mode = 2
+
+[node name="GameStatusPanel" type="Panel" parent="GameArea/Controls"]
+custom_minimum_size = Vector2(0, 128)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="GameArea/Controls/GameStatusPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="PlayerInfo" type="VBoxContainer" parent="GameArea/Controls/GameStatusPanel/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="PlayerScore" type="Label" parent="GameArea/Controls/GameStatusPanel/HBoxContainer/PlayerInfo"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_fonts/font = ExtResource("4_78awf")
+theme_override_font_sizes/font_size = 32
+text = "   YOUR SCORE: 0"
+vertical_alignment = 1
+
+[node name="PlayerMoves" type="Label" parent="GameArea/Controls/GameStatusPanel/HBoxContainer/PlayerInfo"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_fonts/font = ExtResource("4_78awf")
+theme_override_font_sizes/font_size = 32
+text = "   5 MOVES, 5 DISCARDS"
+vertical_alignment = 1
+
+[node name="GameInfo" type="VBoxContainer" parent="GameArea/Controls/GameStatusPanel/HBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="GameArea/Controls/GameStatusPanel/HBoxContainer/GameInfo"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_78awf")
+theme_override_font_sizes/font_size = 32
+text = "TURN"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TurnLbl" type="Label" parent="GameArea/Controls/GameStatusPanel/HBoxContainer/GameInfo"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_78awf")
+theme_override_font_sizes/font_size = 64
+text = "1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="OpponentInfo" type="VBoxContainer" parent="GameArea/Controls/GameStatusPanel/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="OpponentScore" type="Label" parent="GameArea/Controls/GameStatusPanel/HBoxContainer/OpponentInfo"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_fonts/font = ExtResource("4_78awf")
+theme_override_font_sizes/font_size = 32
+text = "OPPONENT SCORE: 0   "
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="OpponentMoves" type="Label" parent="GameArea/Controls/GameStatusPanel/HBoxContainer/OpponentInfo"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_fonts/font = ExtResource("4_78awf")
+theme_override_font_sizes/font_size = 32
+text = "5 MOVES, 5 DISCARDS   "
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Host Hand" type="HBoxContainer" parent="GameArea/Controls"]
+custom_minimum_size = Vector2(0, 128)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -208.0
+offset_bottom = -80.0
+grow_horizontal = 2
+grow_vertical = 0
+alignment = 1
+
+[node name="Client Hand" type="HBoxContainer" parent="GameArea/Controls"]
+custom_minimum_size = Vector2(0, 128)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -208.0
+offset_bottom = -80.0
+grow_horizontal = 2
+grow_vertical = 0
+alignment = 1
+
+[node name="Move Preview" type="HBoxContainer" parent="GameArea/Controls"]
+custom_minimum_size = Vector2(0, 128)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -448.0
+offset_bottom = -320.0
+grow_horizontal = 2
+grow_vertical = 0
+alignment = 1
+
+[node name="PlayerInputs" type="HBoxContainer" parent="GameArea/Controls"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -65.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="DiscardBtn" type="Button" parent="GameArea/Controls/PlayerInputs"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("4_78awf")
+theme_override_font_sizes/font_size = 48
+text = "   DISCARD TILES   "
+
+[node name="SubmitBtn" type="Button" parent="GameArea/Controls/PlayerInputs"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("4_78awf")
+theme_override_font_sizes/font_size = 48
+text = "   SUBMIT MOVE   "
+
+[node name="Challenge Container" type="Panel" parent="GameArea/Controls"]
+unique_name_in_owner = true
+visible = false
+self_modulate = Color(0, 0, 0, 1)
+custom_minimum_size = Vector2(0, 128)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -216.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_78awf")
+
+[node name="MarginContainer" type="MarginContainer" parent="GameArea/Controls/Challenge Container"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="GameArea/Controls/Challenge Container/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="ChallengeBtn" type="Button" parent="GameArea/Controls/Challenge Container/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("4_78awf")
+theme_override_font_sizes/font_size = 48
+text = "   CHALLENGE VALIDITY   "
+
+[node name="SkipChallengeBtn" type="Button" parent="GameArea/Controls/Challenge Container/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("4_78awf")
+theme_override_font_sizes/font_size = 48
+text = "   SKIP CHALLENGE   "
+
+[node name="ResponseWait" type="Panel" parent="GameArea/Controls"]
+unique_name_in_owner = true
+visible = false
+self_modulate = Color(0, 0, 0, 1)
+custom_minimum_size = Vector2(0, 128)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -216.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_78awf")
+
+[node name="Label" type="Label" parent="GameArea/Controls/ResponseWait"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -93.5
+offset_top = -38.0
+offset_right = 93.5
+offset_bottom = 38.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("4_78awf")
+theme_override_font_sizes/font_size = 64
+text = "Opponent is thinking..."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ChallengeResult" type="Panel" parent="GameArea/Controls"]
+unique_name_in_owner = true
+visible = false
+self_modulate = Color(0, 0, 0, 1)
+custom_minimum_size = Vector2(0, 128)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -216.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_78awf")
+
+[node name="MarginContainer" type="MarginContainer" parent="GameArea/Controls/ChallengeResult"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameArea/Controls/ChallengeResult/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="ChallengeWon" type="Label" parent="GameArea/Controls/ChallengeResult/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_fonts/font = ExtResource("4_78awf")
+theme_override_font_sizes/font_size = 64
+text = "   Challenge Won (+1 Discard)   "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ChallengeLost" type="Label" parent="GameArea/Controls/ChallengeResult/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_fonts/font = ExtResource("4_78awf")
+theme_override_font_sizes/font_size = 64
+text = "   Challenge Lost (Opponent +10 pts)   "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CloseBtn" type="Button" parent="GameArea/Controls/ChallengeResult/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("4_78awf")
+theme_override_font_sizes/font_size = 48
+text = "   OK   "
+
+[node name="ResponseResult" type="Panel" parent="GameArea/Controls"]
+unique_name_in_owner = true
+visible = false
+self_modulate = Color(0, 0, 0, 1)
+custom_minimum_size = Vector2(0, 128)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -216.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_78awf")
+
+[node name="MarginContainer" type="MarginContainer" parent="GameArea/Controls/ResponseResult"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameArea/Controls/ResponseResult/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="ResponseWon" type="Label" parent="GameArea/Controls/ResponseResult/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_fonts/font = ExtResource("4_78awf")
+theme_override_font_sizes/font_size = 64
+text = "   Equation Valid (Extra +10 pts)   "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ResponseLost" type="Label" parent="GameArea/Controls/ResponseResult/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_fonts/font = ExtResource("4_78awf")
+theme_override_font_sizes/font_size = 64
+text = "   Equation Invalid (Opponent +1 Discard)   "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CloseResBtn" type="Button" parent="GameArea/Controls/ResponseResult/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("4_78awf")
+theme_override_font_sizes/font_size = 48
+text = "   OK   "
+
+[node name="Response Container" type="Panel" parent="GameArea/Controls"]
+unique_name_in_owner = true
+visible = false
+self_modulate = Color(0, 0, 0, 1)
+custom_minimum_size = Vector2(0, 128)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -239.0
+offset_bottom = 4.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_78awf")
+
+[node name="MarginContainer" type="MarginContainer" parent="GameArea/Controls/Response Container"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameArea/Controls/Response Container/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameArea/Controls/Response Container/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 1
+
+[node name="Input Container" type="HBoxContainer" parent="GameArea/Controls/Response Container/MarginContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="GameArea/Controls/Response Container/MarginContainer/VBoxContainer/VBoxContainer/Input Container"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_78awf")
+theme_override_font_sizes/font_size = 64
+text = "   X =   "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SolutionInput" type="LineEdit" parent="GameArea/Controls/Response Container/MarginContainer/VBoxContainer/VBoxContainer/Input Container"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource("Theme_78awf")
+placeholder_text = "0.000"
+alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="GameArea/Controls/Response Container/MarginContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="0" type="Button" parent="GameArea/Controls/Response Container/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("4_78awf")
+theme_override_font_sizes/font_size = 48
+text = "   0   "
+
+[node name="1" type="Button" parent="GameArea/Controls/Response Container/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("4_78awf")
+theme_override_font_sizes/font_size = 48
+text = "   1   "
+
+[node name="2" type="Button" parent="GameArea/Controls/Response Container/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("4_78awf")
+theme_override_font_sizes/font_size = 48
+text = "   2   "
+
+[node name="3" type="Button" parent="GameArea/Controls/Response Container/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("4_78awf")
+theme_override_font_sizes/font_size = 48
+text = "   3   "
+
+[node name="4" type="Button" parent="GameArea/Controls/Response Container/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("4_78awf")
+theme_override_font_sizes/font_size = 48
+text = "   4   "
+
+[node name="5" type="Button" parent="GameArea/Controls/Response Container/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("4_78awf")
+theme_override_font_sizes/font_size = 48
+text = "   5   "
+
+[node name="6" type="Button" parent="GameArea/Controls/Response Container/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("4_78awf")
+theme_override_font_sizes/font_size = 48
+text = "   6   "
+
+[node name="7" type="Button" parent="GameArea/Controls/Response Container/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("4_78awf")
+theme_override_font_sizes/font_size = 48
+text = "   7   "
+
+[node name="8" type="Button" parent="GameArea/Controls/Response Container/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("4_78awf")
+theme_override_font_sizes/font_size = 48
+text = "   8   "
+
+[node name="9" type="Button" parent="GameArea/Controls/Response Container/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("4_78awf")
+theme_override_font_sizes/font_size = 48
+text = "   9   "
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="GameArea/Controls/Response Container/MarginContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="NegativeBtn" type="Button" parent="GameArea/Controls/Response Container/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_78awf")
+theme_override_font_sizes/font_size = 48
+text = "   -   "
+
+[node name="DecimalPointBtn" type="Button" parent="GameArea/Controls/Response Container/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_78awf")
+theme_override_font_sizes/font_size = 48
+text = "   .   "
+
+[node name="DeleteBtn" type="Button" parent="GameArea/Controls/Response Container/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("4_78awf")
+theme_override_font_sizes/font_size = 48
+text = "   DELETE   "
+
+[node name="No Solution" type="Button" parent="GameArea/Controls/Response Container/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("4_78awf")
+theme_override_font_sizes/font_size = 48
+text = "   NO SOLUTION   "
+
+[node name="Submit Solution" type="Button" parent="GameArea/Controls/Response Container/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("4_78awf")
+theme_override_font_sizes/font_size = 48
+text = "   SUBMIT   "
+
+[node name="TurnIndicator" type="Label" parent="GameArea/Controls"]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -152.5
+offset_bottom = 152.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("4_78awf")
+theme_override_font_sizes/font_size = 128
+text = "YOUR
+TURN"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Panel" type="Panel" parent="GameArea/Controls/TurnIndicator"]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GameResults" type="Panel" parent="GameArea/Controls"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_s0nni")
+
+[node name="MarginContainer" type="MarginContainer" parent="GameArea/Controls/GameResults"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="Control" type="Control" parent="GameArea/Controls/GameResults/MarginContainer"]
+layout_mode = 2
+
+[node name="Result" type="Label" parent="GameArea/Controls/GameResults/MarginContainer/Control"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -129.5
+offset_right = 129.5
+offset_bottom = 76.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("4_78awf")
+theme_override_font_sizes/font_size = 64
+text = "YOU WIN"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="GameArea/Controls/GameResults/MarginContainer/Control"]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -58.5
+offset_bottom = 58.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 16
+
+[node name="PlayerResult" type="Label" parent="GameArea/Controls/GameResults/MarginContainer/Control/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("4_78awf")
+theme_override_font_sizes/font_size = 48
+text = "You: 0 pts"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="OpponentResult" type="Label" parent="GameArea/Controls/GameResults/MarginContainer/Control/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("4_78awf")
+theme_override_font_sizes/font_size = 48
+text = "Opponent: 0 pts"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="GameArea/Controls/GameResults/MarginContainer/Control"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -8.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("4_78awf")
+theme_override_font_sizes/font_size = 64
+text = "Quit Match"
+
+[node name="GameDisconnect" type="Panel" parent="GameArea/Controls"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_s0nni")
+
+[node name="MarginContainer" type="MarginContainer" parent="GameArea/Controls/GameDisconnect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="Control" type="Control" parent="GameArea/Controls/GameDisconnect/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="GameArea/Controls/GameDisconnect/MarginContainer/Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -284.0
+offset_top = -38.0
+offset_right = 284.0
+offset_bottom = 38.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("4_78awf")
+theme_override_font_sizes/font_size = 64
+text = "CONNECTION LOST"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="GameArea/Controls/GameDisconnect/MarginContainer/Control"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -8.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("4_78awf")
+theme_override_font_sizes/font_size = 64
+text = "Quit Match"
+
+[node name="Animator" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
+libraries = {
+&"": SubResource("AnimationLibrary_aug50")
+}
+
+[connection signal="pressed" from="GameArea/Controls/PlayerInputs/DiscardBtn" to="." method="_on_discard_btn_pressed"]
+[connection signal="pressed" from="GameArea/Controls/PlayerInputs/SubmitBtn" to="." method="_on_submit_btn_pressed"]
+[connection signal="pressed" from="GameArea/Controls/Challenge Container/MarginContainer/HBoxContainer/ChallengeBtn" to="." method="_on_challenge_btn_pressed"]
+[connection signal="pressed" from="GameArea/Controls/Challenge Container/MarginContainer/HBoxContainer/SkipChallengeBtn" to="." method="_on_skip_challenge_btn_pressed"]
+[connection signal="pressed" from="GameArea/Controls/ChallengeResult/MarginContainer/VBoxContainer/CloseBtn" to="." method="_on_close_btn_pressed"]
+[connection signal="pressed" from="GameArea/Controls/ResponseResult/MarginContainer/VBoxContainer/CloseResBtn" to="." method="_on_close_res_btn_pressed"]
+[connection signal="pressed" from="GameArea/Controls/Response Container/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/0" to="." method="_on_num_btn_pressed" binds= ["0"]]
+[connection signal="pressed" from="GameArea/Controls/Response Container/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/1" to="." method="_on_num_btn_pressed" binds= ["1"]]
+[connection signal="pressed" from="GameArea/Controls/Response Container/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/2" to="." method="_on_num_btn_pressed" binds= ["2"]]
+[connection signal="pressed" from="GameArea/Controls/Response Container/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/3" to="." method="_on_num_btn_pressed" binds= ["3"]]
+[connection signal="pressed" from="GameArea/Controls/Response Container/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/4" to="." method="_on_num_btn_pressed" binds= ["4"]]
+[connection signal="pressed" from="GameArea/Controls/Response Container/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/5" to="." method="_on_num_btn_pressed" binds= ["5"]]
+[connection signal="pressed" from="GameArea/Controls/Response Container/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/6" to="." method="_on_num_btn_pressed" binds= ["6"]]
+[connection signal="pressed" from="GameArea/Controls/Response Container/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/7" to="." method="_on_num_btn_pressed" binds= ["7"]]
+[connection signal="pressed" from="GameArea/Controls/Response Container/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/8" to="." method="_on_num_btn_pressed" binds= ["8"]]
+[connection signal="pressed" from="GameArea/Controls/Response Container/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/9" to="." method="_on_num_btn_pressed" binds= ["9"]]
+[connection signal="pressed" from="GameArea/Controls/Response Container/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer2/NegativeBtn" to="." method="_on_num_btn_pressed" binds= ["-"]]
+[connection signal="pressed" from="GameArea/Controls/Response Container/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer2/DecimalPointBtn" to="." method="_on_num_btn_pressed" binds= ["."]]
+[connection signal="pressed" from="GameArea/Controls/Response Container/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer2/DeleteBtn" to="." method="_on_delete_btn_pressed"]
+[connection signal="pressed" from="GameArea/Controls/Response Container/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer2/No Solution" to="." method="_on_no_solution_pressed"]
+[connection signal="pressed" from="GameArea/Controls/Response Container/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer2/Submit Solution" to="." method="_on_submit_solution_pressed"]
+[connection signal="visibility_changed" from="GameArea/Controls/GameResults" to="." method="_on_game_results_visibility_changed"]
+[connection signal="pressed" from="GameArea/Controls/GameResults/MarginContainer/Control/Button" to="." method="_on_quit_pressed"]
+[connection signal="pressed" from="GameArea/Controls/GameDisconnect/MarginContainer/Control/Button" to="." method="_on_quit_pressed"]
