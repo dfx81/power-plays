@@ -294,6 +294,7 @@ func _on_submit_btn_pressed() -> void:
 		remove_used_tiles(false)
 		update_turn.rpc()
 		update_game_state.rpc("PLAY")
+		send_player_data.rpc_id(opponent_id, moves, discards)
 		
 	if len(current_move) < 3:
 		print("invalid")
@@ -347,6 +348,7 @@ func _on_submit_btn_pressed() -> void:
 		print("%d moves left" % moves)
 		current_move_score = calculate_eqn_score()
 		submit_tiles.rpc_id(opponent_id, serialize(current_move))
+		send_player_data.rpc_id(opponent_id, moves, discards)
 		turn_passed += 1
 		remove_used_tiles(false)
 		update_turn.rpc()
@@ -430,6 +432,7 @@ func send_player_data(cur_score: int, cur_moves: int, cur_discards: int):
 
 func _on_challenge_btn_pressed() -> void:
 	update_game_state.rpc_id(opponent_id, "CHALLENGED")
+	%"Challenge Container".visible = false
 	%ResponseWait.visible = true
 
 
