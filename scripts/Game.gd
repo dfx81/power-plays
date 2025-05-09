@@ -12,9 +12,9 @@ var turn: int = 0
 var turn_passed: int = 0
 @onready var bgm: AudioStreamPlayer = $BGM
 
-var moves: int = 1
+var moves: int = 5
 var discards: int = 5
-var opponent_moves: int = 1
+var opponent_moves: int = 5
 var opponent_discards: int = 5
 
 var opponent_id: int = 0
