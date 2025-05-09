@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://cgjpecdnxjctn"]
+
+[ext_resource type="PackedScene" uid="uid://m5elxvgs2l75" path="res://assets/models/kenney_mini-characters/Models/GLB format/character-female-c.glb" id="1_2s7a4"]
+
+[node name="Character" instance=ExtResource("1_2s7a4")]
+
+[node name="Skeleton3D" parent="character-female-c" index="0"]
+bones/4/rotation = Quaternion(0, 0, -0.382683, 0.92388)
+bones/5/rotation = Quaternion(0, 0, 0.382683, 0.92388)
+
+[node name="AnimationPlayer" parent="." index="1"]
+autoplay = "idle"

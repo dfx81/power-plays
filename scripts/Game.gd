@@ -1,18 +1,20 @@
 class_name Game extends Control
 
-var players: Dictionary[int, String] = {}
+var players: Dictionary[int, Variant] = {}
 var player_tiles: Dictionary[int, Array] = {
 	0: [],
 	1: [],
 	2: [],
 }
+
 var cur_tiles: Array = []
 var turn: int = 0
 var turn_passed: int = 0
+@onready var bgm: AudioStreamPlayer = $BGM
 
-var moves: int = 5
+var moves: int = 1
 var discards: int = 5
-var opponent_moves: int = 5
+var opponent_moves: int = 1
 var opponent_discards: int = 5
 
 var opponent_id: int = 0
@@ -25,6 +27,14 @@ var player_id: int = 0
 
 signal on_new_turn_start
 signal disconnect_from_game
+signal view_board
+signal view_opponent
+signal audio_muted
+signal anim_place
+signal anim_shake
+signal anim_nod
+signal game_start
+signal game_end
 
 var current_move : Array[Tile] = []
 var current_move_eqn : String = ""
@@ -34,7 +44,13 @@ var game_state: String = "PLAY"
 var your_score: int = 0
 var opponent_score: int = 0
 
+var challenge_skipped: bool = true
+var running: bool = false
+
+var ended: int = 0
+
 func _ready() -> void:
+	$BGM.volume_linear = 1
 	setup()
 	draw_tiles()
 	show_hands()
@@ -60,11 +76,29 @@ func setup():
 	on_new_turn_start.connect(turn_start)
 	turn_start()
 
+@rpc("any_peer", "call_local", "reliable")
+func has_ended():
+	ended += 1
+	
+	if ended >= 2:
+		emit_signal("game_end")
+		%GameResults.visible = true
+
 func turn_start():
+	if !running:
+		running = true
+		emit_signal("game_start")
+	
 	var your_turn: bool = turn % 2 == 0 if multiplayer.is_server() else turn % 2 != 0
 	print("Your turn" if your_turn else "Opponent's turn")
 	
 	%TurnIndicator.text = "YOUR\nTURN" if your_turn else "OPPONENT'S\nTURN"
+	
+	if your_turn:
+		emit_signal("view_board")
+	else:
+		emit_signal("view_opponent")
+	
 	%Animator.play("show_turn")
 
 func draw_tiles(bonuses: int = -1):
@@ -183,8 +217,6 @@ func submit_tiles(tiles: Array[Dictionary]):
 	var submitted_tiles: Array[Tile] = deserialize(tiles)
 	current_move = submitted_tiles
 	
-	print(players[multiplayer.get_unique_id()] + ":" + str(current_move))
-	
 	update_preview()
 	
 @rpc("any_peer", "call_local", "reliable")
@@ -200,29 +232,46 @@ func update_game_state(new_state: String):
 	
 	match (game_state):
 		"VERIFY":
+			%ChallengeResult.visible = false
+			%ResponseResult.visible = false
 			%"Challenge Container".visible = true
+			emit_signal("view_board")
 		"PLAY":
 			if moves == 0 && opponent_moves == 0:
-				%GameResults.visible = true
+				has_ended.rpc()
 				return
 			
 			%"Challenge Container".visible = false
 			current_move.clear()
 			update_preview()
+			
+			emit_signal("view_board")
 		"SCORE":
+			if !challenge_skipped:
+				emit_signal("view_board")
+			else:
+				emit_signal("view_opponent")
+			
 			your_score += current_move_score
+			send_player_data.rpc_id(opponent_id, your_score, moves, discards)
 			current_move_score = 0
 			print("YOUR SCORE:" + str(your_score))
 			current_move.clear()
 			update_preview()
-			send_player_data.rpc_id(opponent_id, your_score, moves, discards)
 			
-			if moves == 0 && opponent_moves == 0:
-				%GameResults.visible = true
+			if moves <= 0 && opponent_moves <= 0:
+				has_ended.rpc()
+				emit_signal("game_end")
 				return
 		"CHALLENGED":
+			challenge_skipped = false
 			%"Response Container".visible = true
+			emit_signal("view_board")
 		"SUCCESS":
+			emit_signal("view_opponent")
+			play_anim("anim_shake")
+			await get_tree().create_timer(2).timeout
+			emit_signal("view_board")
 			%ResponseWait.visible = false
 			%ChallengeLost.visible = false
 			%ChallengeWon.visible = true
@@ -231,12 +280,26 @@ func update_game_state(new_state: String):
 			
 			discards += 1
 			send_player_data.rpc_id(opponent_id, your_score, moves, discards)
+			
+			if moves <= 0 && opponent_moves <= 0:
+				%ChallengeResult.visible = false
+				has_ended.rpc()
+				return
 		"FAIL":
+			emit_signal("view_opponent")
+			play_anim("anim_nod")
+			await get_tree().create_timer(2).timeout
+			emit_signal("view_board")
 			%ResponseWait.visible = false
 			%ChallengeLost.visible = true
 			%ChallengeWon.visible = false
 			
 			%ChallengeResult.visible = true
+			
+			if moves <= 0 && opponent_moves <= 0:
+				%ChallengeResult.visible = false
+				has_ended.rpc()
+				return
 
 func selected(tile: Tile) -> void:
 	current_move.append(tile)
@@ -294,7 +357,8 @@ func _on_submit_btn_pressed() -> void:
 		remove_used_tiles(false)
 		update_turn.rpc()
 		update_game_state.rpc("PLAY")
-		send_player_data.rpc_id(opponent_id, moves, discards)
+		challenge_skipped = true
+		send_player_data.rpc_id(opponent_id, your_score, moves, discards)
 		
 	if len(current_move) < 3:
 		print("invalid")
@@ -348,9 +412,10 @@ func _on_submit_btn_pressed() -> void:
 		print("%d moves left" % moves)
 		current_move_score = calculate_eqn_score()
 		submit_tiles.rpc_id(opponent_id, serialize(current_move))
-		send_player_data.rpc_id(opponent_id, moves, discards)
+		send_player_data.rpc_id(opponent_id, your_score, moves, discards)
 		turn_passed += 1
 		remove_used_tiles(false)
+		challenge_skipped = true
 		update_turn.rpc()
 		update_game_state.rpc("VERIFY")
 	else:
@@ -426,9 +491,6 @@ func send_player_data(cur_score: int, cur_moves: int, cur_discards: int):
 	opponent_score = cur_score
 	opponent_moves = cur_moves
 	opponent_discards = cur_discards
-	
-	if moves <= 0 && opponent_moves <= 0:
-		%GameResults.visible = true
 
 func _on_challenge_btn_pressed() -> void:
 	update_game_state.rpc_id(opponent_id, "CHALLENGED")
@@ -439,7 +501,7 @@ func _on_challenge_btn_pressed() -> void:
 func _on_no_solution_pressed() -> void:
 	update_game_state.rpc_id(opponent_id, "SUCCESS")
 	%"Response Container".visible = false
-	%SolutionInput.value = 0
+	%SolutionInput.value = ""
 	
 	send_player_data(your_score, moves, discards)
 	reset_preview()
@@ -462,13 +524,24 @@ func _on_submit_solution_pressed() -> void:
 	
 	var eqn_parts: Array = current_move_eqn.split("=")
 	
-	var lhs: String = "floor((%s) * 1000 )" % eqn_parts[0]
-	var rhs: String = "floor((%s) * 1000 )" % eqn_parts[1]
+	var x_val: float = float(%SolutionInput.text)
 	
-	expression.parse(lhs, ["x"])
-	var lhs_res: float = expression.execute([float(%SolutionInput.text)])
-	expression.parse(rhs, ["x"])
-	var rhs_res: float = expression.execute([float(%SolutionInput.text)])
+	var lhs: String = "floor(float(%s) * 1000 )" % eqn_parts[0]
+	var rhs: String = "floor(float(%s) * 1000 )" % eqn_parts[1]
+	
+	expression.parse(lhs, ["x",])
+	var l_res: Variant = expression.execute([x_val,])
+	var lhs_res: float = l_res if !expression.has_execute_failed() else -1
+	
+	if expression.has_execute_failed():
+		print(expression.get_error_text())
+		
+	expression.parse(rhs, ["x",])
+	var r_res: Variant = expression.execute([x_val,])
+	var rhs_res: float = r_res if !expression.has_execute_failed() else -2 
+	
+	if expression.has_execute_failed():
+		print(expression.get_error_text())
 	
 	if lhs_res == rhs_res:
 		update_game_state.rpc_id(opponent_id, "FAIL")
@@ -492,6 +565,13 @@ func _on_close_btn_pressed() -> void:
 		update_game_state("PLAY")
 	
 func _on_close_res_btn_pressed() -> void:
+	var your_turn: bool = turn % 2 == 0 if multiplayer.is_server() else turn % 2 != 0
+	
+	if !your_turn:
+		emit_signal("view_opponent")
+	else:
+		emit_signal("view_board")
+		
 	%ResponseResult.visible = false
 	reset_preview()
 
@@ -508,6 +588,7 @@ func _on_game_results_visibility_changed() -> void:
 		
 	%PlayerResult.text = "You: %d pts" % your_score
 	%OpponentResult.text = "Opponent: %d pts" % opponent_score
+	emit_signal("game_end")
 
 func on_disconnect():
 	%GameDisconnect.visible = true
@@ -536,3 +617,11 @@ func _on_delete_btn_pressed() -> void:
 	cur_val = cur_val.substr(0, len(cur_val) - 1)
 	
 	%SolutionInput.text = cur_val
+
+func fade_song() -> void:
+	await get_tree().create_tween().tween_property($BGM, "volume_linear", 0, 1).set_trans(Tween.TRANS_LINEAR).finished
+	emit_signal("audio_muted")
+
+@rpc("any_peer", "call_remote", "reliable")
+func play_anim(anim_signal: String):
+	emit_signal(anim_signal)

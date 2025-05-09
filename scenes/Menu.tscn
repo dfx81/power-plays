@@ -1,0 +1,1147 @@
+[gd_scene load_steps=26 format=3 uid="uid://b0mb0qtgcf5qw"]
+
+[ext_resource type="Script" uid="uid://cdejxwlvl71y3" path="res://scripts/Menu.gd" id="1_thu7x"]
+[ext_resource type="PackedScene" uid="uid://dtp8mvdegalnq" path="res://scenes/Room.tscn" id="1_xdvgc"]
+[ext_resource type="PackedScene" uid="uid://dh5bep4wwtggd" path="res://scenes/Game.tscn" id="2_6c8sk"]
+[ext_resource type="FontFile" uid="uid://8qnlr5wdpc05" path="res://assets/fonts/Tomorrow/Tomorrow-Light.ttf" id="2_11y2r"]
+[ext_resource type="AudioStream" uid="uid://utou5kh8lffq" path="res://assets/audio/Night_View.mp3" id="2_upctu"]
+[ext_resource type="FontFile" uid="uid://dcl7ct25nvtia" path="res://assets/fonts/Tomorrow/Tomorrow-Bold.ttf" id="4_2af52"]
+[ext_resource type="PackedScene" uid="uid://ds6u1m1ipdltc" path="res://scenes/Character1.tscn" id="4_el213"]
+[ext_resource type="StyleBox" uid="uid://cp2di3n3p83gq" path="res://resources/SimpleStyleBox.tres" id="4_rtd1e"]
+[ext_resource type="PackedScene" uid="uid://c8yqs0u2imy0c" path="res://scenes/Character2.tscn" id="5_thu7x"]
+[ext_resource type="PackedScene" uid="uid://cgjpecdnxjctn" path="res://scenes/Character3.tscn" id="6_2af52"]
+[ext_resource type="PackedScene" uid="uid://bchjpm54wh1x5" path="res://scenes/Character4.tscn" id="7_7ycwl"]
+[ext_resource type="PackedScene" uid="uid://b51rid05ohawr" path="res://scenes/Character5.tscn" id="8_rtd1e"]
+[ext_resource type="PackedScene" uid="uid://ddn72kvkwgciy" path="res://scenes/Character6.tscn" id="9_6c8sk"]
+[ext_resource type="PackedScene" uid="uid://bibnnpwuai6x4" path="res://scenes/Character7.tscn" id="10_5p0sf"]
+[ext_resource type="PackedScene" uid="uid://cvd3blk88qadk" path="res://scenes/Character8.tscn" id="11_7t7qg"]
+[ext_resource type="PackedScene" uid="uid://dpix2sa5um08r" path="res://scenes/Character9.tscn" id="12_l3wcu"]
+[ext_resource type="FontFile" uid="uid://c3gkrvhsj8nwo" path="res://assets/fonts/Tomorrow/Tomorrow-Black.ttf" id="16_rtd1e"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o0tnf"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7ycwl"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+expand_margin_left = 8.0
+expand_margin_top = 8.0
+expand_margin_right = 8.0
+expand_margin_bottom = 8.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rtd1e"]
+bg_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="Animation" id="Animation_o0tnf"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0, 0, 0, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("TransitionCam:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.724749, 0.43158, 0.0267154)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("TransitionCam:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, -1.5708, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_11y2r"]
+resource_name = "fade_in"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 1), Color(0, 0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_6c8sk"]
+resource_name = "main_cust"
+length = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TransitionCam:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0.45794, 0.562578, 0.489295), Vector3(0.724749, 0.43158, 0.0267154)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("TransitionCam:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, -1.5708, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_5p0sf"]
+resource_name = "main_door"
+length = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TransitionCam:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0.45794, 0.562578, 0.489295), Vector3(-0.605566, 0.603646, -1.07769)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("TransitionCam:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_jmdev"]
+_data = {
+&"RESET": SubResource("Animation_o0tnf"),
+&"fade_in": SubResource("Animation_11y2r"),
+&"main_cust": SubResource("Animation_6c8sk"),
+&"main_door": SubResource("Animation_5p0sf")
+}
+
+[node name="Menu" type="Node3D"]
+script = ExtResource("1_thu7x")
+game_scene = ExtResource("2_6c8sk")
+
+[node name="Room" parent="." instance=ExtResource("1_xdvgc")]
+
+[node name="TransitionCam" type="Camera3D" parent="."]
+transform = Transform3D(-3.61999e-06, 0, -1, 0, 1, 0, 1, 0, -3.61999e-06, 0.724749, 0.43158, 0.0267154)
+
+[node name="MainCamera" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.45794, 0.562578, 0.489295)
+current = true
+
+[node name="MainScreen" type="Control" parent="MainCamera"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainCamera/MainScreen"]
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -319.0
+offset_right = 319.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="HostBtn" type="Button" parent="MainCamera/MainScreen/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_11y2r")
+theme_override_font_sizes/font_size = 64
+theme_override_styles/focus = ExtResource("4_rtd1e")
+theme_override_styles/disabled_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/disabled = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed = ExtResource("4_rtd1e")
+theme_override_styles/hover_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover = SubResource("StyleBoxFlat_o0tnf")
+theme_override_styles/pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/pressed = ExtResource("4_rtd1e")
+theme_override_styles/normal_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/normal = ExtResource("4_rtd1e")
+text = "   Host a Game   "
+
+[node name="JoinBtn" type="Button" parent="MainCamera/MainScreen/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_11y2r")
+theme_override_font_sizes/font_size = 64
+theme_override_styles/focus = ExtResource("4_rtd1e")
+theme_override_styles/disabled_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/disabled = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed = ExtResource("4_rtd1e")
+theme_override_styles/hover_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover = SubResource("StyleBoxFlat_o0tnf")
+theme_override_styles/pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/pressed = ExtResource("4_rtd1e")
+theme_override_styles/normal_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/normal = ExtResource("4_rtd1e")
+text = "   Join a Game   "
+
+[node name="CustomizeBtn" type="Button" parent="MainCamera/MainScreen/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_11y2r")
+theme_override_font_sizes/font_size = 64
+theme_override_styles/focus = ExtResource("4_rtd1e")
+theme_override_styles/disabled_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/disabled = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed = ExtResource("4_rtd1e")
+theme_override_styles/hover_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover = SubResource("StyleBoxFlat_o0tnf")
+theme_override_styles/pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/pressed = ExtResource("4_rtd1e")
+theme_override_styles/normal_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/normal = ExtResource("4_rtd1e")
+text = "   Change Character   "
+
+[node name="CreditsBtn" type="Button" parent="MainCamera/MainScreen/VBoxContainer"]
+visible = false
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_11y2r")
+theme_override_font_sizes/font_size = 64
+theme_override_styles/focus = ExtResource("4_rtd1e")
+theme_override_styles/disabled_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/disabled = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed = ExtResource("4_rtd1e")
+theme_override_styles/hover_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover = SubResource("StyleBoxFlat_o0tnf")
+theme_override_styles/pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/pressed = ExtResource("4_rtd1e")
+theme_override_styles/normal_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/normal = ExtResource("4_rtd1e")
+text = "   Credits   "
+
+[node name="CustomizeCamera" type="Camera3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0.724749, 0.43158, 0.0267154)
+
+[node name="CustomizeScreen" type="Control" parent="CustomizeCamera"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="CustomizeCamera/CustomizeScreen"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -425.0
+offset_top = 57.0
+offset_right = 412.0
+offset_bottom = 142.0
+grow_horizontal = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="Label" type="Label" parent="CustomizeCamera/CustomizeScreen/HBoxContainer2"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_2af52")
+theme_override_font_sizes/font_size = 64
+text = "Name:    "
+
+[node name="PlayerNameInput" type="LineEdit" parent="CustomizeCamera/CustomizeScreen/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_11y2r")
+theme_override_font_sizes/font_size = 64
+theme_override_styles/normal = SubResource("StyleBoxFlat_7ycwl")
+placeholder_text = "Player"
+alignment = 1
+max_length = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CustomizeCamera/CustomizeScreen"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -138.0
+offset_bottom = -53.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="PrevBtn" type="Button" parent="CustomizeCamera/CustomizeScreen/HBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_11y2r")
+theme_override_font_sizes/font_size = 64
+theme_override_styles/focus = ExtResource("4_rtd1e")
+theme_override_styles/disabled_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/disabled = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed = ExtResource("4_rtd1e")
+theme_override_styles/hover_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover = SubResource("StyleBoxFlat_o0tnf")
+theme_override_styles/pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/pressed = ExtResource("4_rtd1e")
+theme_override_styles/normal_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/normal = ExtResource("4_rtd1e")
+text = "   Prev   "
+
+[node name="ConfirmCharBtn" type="Button" parent="CustomizeCamera/CustomizeScreen/HBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_11y2r")
+theme_override_font_sizes/font_size = 64
+theme_override_styles/focus = ExtResource("4_rtd1e")
+theme_override_styles/disabled_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/disabled = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed = ExtResource("4_rtd1e")
+theme_override_styles/hover_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover = SubResource("StyleBoxFlat_o0tnf")
+theme_override_styles/pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/pressed = ExtResource("4_rtd1e")
+theme_override_styles/normal_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/normal = ExtResource("4_rtd1e")
+text = "   Confirm   "
+
+[node name="NextBtn" type="Button" parent="CustomizeCamera/CustomizeScreen/HBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_11y2r")
+theme_override_font_sizes/font_size = 64
+theme_override_styles/focus = ExtResource("4_rtd1e")
+theme_override_styles/disabled_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/disabled = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed = ExtResource("4_rtd1e")
+theme_override_styles/hover_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover = SubResource("StyleBoxFlat_o0tnf")
+theme_override_styles/pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/pressed = ExtResource("4_rtd1e")
+theme_override_styles/normal_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/normal = ExtResource("4_rtd1e")
+text = "   Next   "
+
+[node name="PlayCamera" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.605566, 0.603646, -1.07769)
+
+[node name="HostScreen" type="Control" parent="PlayCamera"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PlayCamera/HostScreen"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -326.5
+offset_top = -88.0
+offset_right = 326.5
+offset_bottom = 88.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="HostCodeLbl" type="Label" parent="PlayCamera/HostScreen/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_2af52")
+theme_override_font_sizes/font_size = 64
+text = "Host Code: XXXXXXXX"
+horizontal_alignment = 1
+
+[node name="CancelHostBtn" type="Button" parent="PlayCamera/HostScreen/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_11y2r")
+theme_override_font_sizes/font_size = 64
+theme_override_styles/focus = ExtResource("4_rtd1e")
+theme_override_styles/disabled_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/disabled = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed = ExtResource("4_rtd1e")
+theme_override_styles/hover_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover = ExtResource("4_rtd1e")
+theme_override_styles/pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/pressed = ExtResource("4_rtd1e")
+theme_override_styles/normal_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/normal = ExtResource("4_rtd1e")
+text = "   Cancel   "
+
+[node name="JoinScreen" type="Control" parent="PlayCamera"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PlayCamera/JoinScreen"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -326.5
+offset_top = -88.0
+offset_right = 326.5
+offset_bottom = 88.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PlayCamera/JoinScreen/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="Label" type="Label" parent="PlayCamera/JoinScreen/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_2af52")
+theme_override_font_sizes/font_size = 64
+text = "Code:"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HostCodeInput" type="LineEdit" parent="PlayCamera/JoinScreen/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_11y2r")
+theme_override_font_sizes/font_size = 64
+theme_override_styles/focus = ExtResource("4_rtd1e")
+theme_override_styles/read_only = ExtResource("4_rtd1e")
+theme_override_styles/normal = ExtResource("4_rtd1e")
+placeholder_text = "XXXXXXXX"
+alignment = 1
+max_length = 8
+expand_to_text_length = true
+emoji_menu_enabled = false
+
+[node name="Keys" type="HBoxContainer" parent="PlayCamera/JoinScreen/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="0" type="Button" parent="PlayCamera/JoinScreen/VBoxContainer/Keys"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_11y2r")
+theme_override_font_sizes/font_size = 64
+theme_override_styles/focus = ExtResource("4_rtd1e")
+theme_override_styles/disabled_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/disabled = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed = ExtResource("4_rtd1e")
+theme_override_styles/hover_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover = ExtResource("4_rtd1e")
+theme_override_styles/pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/pressed = ExtResource("4_rtd1e")
+theme_override_styles/normal_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/normal = ExtResource("4_rtd1e")
+text = "   0   "
+
+[node name="1" type="Button" parent="PlayCamera/JoinScreen/VBoxContainer/Keys"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_11y2r")
+theme_override_font_sizes/font_size = 64
+theme_override_styles/focus = ExtResource("4_rtd1e")
+theme_override_styles/disabled_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/disabled = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed = ExtResource("4_rtd1e")
+theme_override_styles/hover_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover = ExtResource("4_rtd1e")
+theme_override_styles/pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/pressed = ExtResource("4_rtd1e")
+theme_override_styles/normal_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/normal = ExtResource("4_rtd1e")
+text = "   1   "
+
+[node name="2" type="Button" parent="PlayCamera/JoinScreen/VBoxContainer/Keys"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_11y2r")
+theme_override_font_sizes/font_size = 64
+theme_override_styles/focus = ExtResource("4_rtd1e")
+theme_override_styles/disabled_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/disabled = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed = ExtResource("4_rtd1e")
+theme_override_styles/hover_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover = ExtResource("4_rtd1e")
+theme_override_styles/pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/pressed = ExtResource("4_rtd1e")
+theme_override_styles/normal_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/normal = ExtResource("4_rtd1e")
+text = "   2   "
+
+[node name="3" type="Button" parent="PlayCamera/JoinScreen/VBoxContainer/Keys"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_11y2r")
+theme_override_font_sizes/font_size = 64
+theme_override_styles/focus = ExtResource("4_rtd1e")
+theme_override_styles/disabled_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/disabled = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed = ExtResource("4_rtd1e")
+theme_override_styles/hover_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover = ExtResource("4_rtd1e")
+theme_override_styles/pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/pressed = ExtResource("4_rtd1e")
+theme_override_styles/normal_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/normal = ExtResource("4_rtd1e")
+text = "   3   "
+
+[node name="Keys2" type="HBoxContainer" parent="PlayCamera/JoinScreen/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="4" type="Button" parent="PlayCamera/JoinScreen/VBoxContainer/Keys2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_11y2r")
+theme_override_font_sizes/font_size = 64
+theme_override_styles/focus = ExtResource("4_rtd1e")
+theme_override_styles/disabled_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/disabled = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed = ExtResource("4_rtd1e")
+theme_override_styles/hover_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover = ExtResource("4_rtd1e")
+theme_override_styles/pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/pressed = ExtResource("4_rtd1e")
+theme_override_styles/normal_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/normal = ExtResource("4_rtd1e")
+text = "   4   "
+
+[node name="5" type="Button" parent="PlayCamera/JoinScreen/VBoxContainer/Keys2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_11y2r")
+theme_override_font_sizes/font_size = 64
+theme_override_styles/focus = ExtResource("4_rtd1e")
+theme_override_styles/disabled_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/disabled = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed = ExtResource("4_rtd1e")
+theme_override_styles/hover_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover = ExtResource("4_rtd1e")
+theme_override_styles/pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/pressed = ExtResource("4_rtd1e")
+theme_override_styles/normal_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/normal = ExtResource("4_rtd1e")
+text = "   5   "
+
+[node name="6" type="Button" parent="PlayCamera/JoinScreen/VBoxContainer/Keys2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_11y2r")
+theme_override_font_sizes/font_size = 64
+theme_override_styles/focus = ExtResource("4_rtd1e")
+theme_override_styles/disabled_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/disabled = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed = ExtResource("4_rtd1e")
+theme_override_styles/hover_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover = ExtResource("4_rtd1e")
+theme_override_styles/pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/pressed = ExtResource("4_rtd1e")
+theme_override_styles/normal_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/normal = ExtResource("4_rtd1e")
+text = "   6   "
+
+[node name="7" type="Button" parent="PlayCamera/JoinScreen/VBoxContainer/Keys2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_11y2r")
+theme_override_font_sizes/font_size = 64
+theme_override_styles/focus = ExtResource("4_rtd1e")
+theme_override_styles/disabled_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/disabled = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed = ExtResource("4_rtd1e")
+theme_override_styles/hover_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover = ExtResource("4_rtd1e")
+theme_override_styles/pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/pressed = ExtResource("4_rtd1e")
+theme_override_styles/normal_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/normal = ExtResource("4_rtd1e")
+text = "   7   "
+
+[node name="Keys3" type="HBoxContainer" parent="PlayCamera/JoinScreen/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="8" type="Button" parent="PlayCamera/JoinScreen/VBoxContainer/Keys3"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_11y2r")
+theme_override_font_sizes/font_size = 64
+theme_override_styles/focus = ExtResource("4_rtd1e")
+theme_override_styles/disabled_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/disabled = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed = ExtResource("4_rtd1e")
+theme_override_styles/hover_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover = ExtResource("4_rtd1e")
+theme_override_styles/pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/pressed = ExtResource("4_rtd1e")
+theme_override_styles/normal_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/normal = ExtResource("4_rtd1e")
+text = "   8   "
+
+[node name="9" type="Button" parent="PlayCamera/JoinScreen/VBoxContainer/Keys3"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_11y2r")
+theme_override_font_sizes/font_size = 64
+theme_override_styles/focus = ExtResource("4_rtd1e")
+theme_override_styles/disabled_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/disabled = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed = ExtResource("4_rtd1e")
+theme_override_styles/hover_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover = ExtResource("4_rtd1e")
+theme_override_styles/pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/pressed = ExtResource("4_rtd1e")
+theme_override_styles/normal_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/normal = ExtResource("4_rtd1e")
+text = "   9   "
+
+[node name="10" type="Button" parent="PlayCamera/JoinScreen/VBoxContainer/Keys3"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_11y2r")
+theme_override_font_sizes/font_size = 64
+theme_override_styles/focus = ExtResource("4_rtd1e")
+theme_override_styles/disabled_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/disabled = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed = ExtResource("4_rtd1e")
+theme_override_styles/hover_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover = ExtResource("4_rtd1e")
+theme_override_styles/pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/pressed = ExtResource("4_rtd1e")
+theme_override_styles/normal_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/normal = ExtResource("4_rtd1e")
+text = "   A   "
+
+[node name="11" type="Button" parent="PlayCamera/JoinScreen/VBoxContainer/Keys3"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_11y2r")
+theme_override_font_sizes/font_size = 64
+theme_override_styles/focus = ExtResource("4_rtd1e")
+theme_override_styles/disabled_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/disabled = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed = ExtResource("4_rtd1e")
+theme_override_styles/hover_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover = ExtResource("4_rtd1e")
+theme_override_styles/pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/pressed = ExtResource("4_rtd1e")
+theme_override_styles/normal_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/normal = ExtResource("4_rtd1e")
+text = "   B   "
+
+[node name="Keys4" type="HBoxContainer" parent="PlayCamera/JoinScreen/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="12" type="Button" parent="PlayCamera/JoinScreen/VBoxContainer/Keys4"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_11y2r")
+theme_override_font_sizes/font_size = 64
+theme_override_styles/focus = ExtResource("4_rtd1e")
+theme_override_styles/disabled_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/disabled = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed = ExtResource("4_rtd1e")
+theme_override_styles/hover_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover = ExtResource("4_rtd1e")
+theme_override_styles/pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/pressed = ExtResource("4_rtd1e")
+theme_override_styles/normal_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/normal = ExtResource("4_rtd1e")
+text = "   C   "
+
+[node name="13" type="Button" parent="PlayCamera/JoinScreen/VBoxContainer/Keys4"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_11y2r")
+theme_override_font_sizes/font_size = 64
+theme_override_styles/focus = ExtResource("4_rtd1e")
+theme_override_styles/disabled_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/disabled = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed = ExtResource("4_rtd1e")
+theme_override_styles/hover_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover = ExtResource("4_rtd1e")
+theme_override_styles/pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/pressed = ExtResource("4_rtd1e")
+theme_override_styles/normal_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/normal = ExtResource("4_rtd1e")
+text = "   D   "
+
+[node name="14" type="Button" parent="PlayCamera/JoinScreen/VBoxContainer/Keys4"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_11y2r")
+theme_override_font_sizes/font_size = 64
+theme_override_styles/focus = ExtResource("4_rtd1e")
+theme_override_styles/disabled_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/disabled = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed = ExtResource("4_rtd1e")
+theme_override_styles/hover_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover = ExtResource("4_rtd1e")
+theme_override_styles/pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/pressed = ExtResource("4_rtd1e")
+theme_override_styles/normal_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/normal = ExtResource("4_rtd1e")
+text = "   E   "
+
+[node name="15" type="Button" parent="PlayCamera/JoinScreen/VBoxContainer/Keys4"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_11y2r")
+theme_override_font_sizes/font_size = 64
+theme_override_styles/focus = ExtResource("4_rtd1e")
+theme_override_styles/disabled_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/disabled = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed = ExtResource("4_rtd1e")
+theme_override_styles/hover_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover = ExtResource("4_rtd1e")
+theme_override_styles/pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/pressed = ExtResource("4_rtd1e")
+theme_override_styles/normal_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/normal = ExtResource("4_rtd1e")
+text = "   F   "
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="PlayCamera/JoinScreen/VBoxContainer"]
+layout_mode = 2
+
+[node name="DeleteCharBtn" type="Button" parent="PlayCamera/JoinScreen/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_11y2r")
+theme_override_font_sizes/font_size = 64
+theme_override_styles/focus = ExtResource("4_rtd1e")
+theme_override_styles/disabled_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/disabled = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed = ExtResource("4_rtd1e")
+theme_override_styles/hover_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover = ExtResource("4_rtd1e")
+theme_override_styles/pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/pressed = ExtResource("4_rtd1e")
+theme_override_styles/normal_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/normal = ExtResource("4_rtd1e")
+text = "  Delete   "
+
+[node name="JoinGameBtn" type="Button" parent="PlayCamera/JoinScreen/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_11y2r")
+theme_override_font_sizes/font_size = 64
+theme_override_styles/focus = ExtResource("4_rtd1e")
+theme_override_styles/disabled_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/disabled = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed = ExtResource("4_rtd1e")
+theme_override_styles/hover_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover = ExtResource("4_rtd1e")
+theme_override_styles/pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/pressed = ExtResource("4_rtd1e")
+theme_override_styles/normal_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/normal = ExtResource("4_rtd1e")
+text = "   Join Game   "
+
+[node name="CancelJoinBtn" type="Button" parent="PlayCamera/JoinScreen/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_11y2r")
+theme_override_font_sizes/font_size = 64
+theme_override_styles/focus = ExtResource("4_rtd1e")
+theme_override_styles/disabled_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/disabled = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed = ExtResource("4_rtd1e")
+theme_override_styles/hover_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover = ExtResource("4_rtd1e")
+theme_override_styles/pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/pressed = ExtResource("4_rtd1e")
+theme_override_styles/normal_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/normal = ExtResource("4_rtd1e")
+text = "   Cancel   "
+
+[node name="MatchmakingScreen" type="Control" parent="PlayCamera"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PlayCamera/MatchmakingScreen"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -326.5
+offset_top = -88.0
+offset_right = 326.5
+offset_bottom = 88.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="HostCodeLbl" type="Label" parent="PlayCamera/MatchmakingScreen/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_2af52")
+theme_override_font_sizes/font_size = 64
+text = "Connecting..."
+horizontal_alignment = 1
+
+[node name="CancelMatchmakeBtn" type="Button" parent="PlayCamera/MatchmakingScreen/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_11y2r")
+theme_override_font_sizes/font_size = 64
+theme_override_styles/focus = ExtResource("4_rtd1e")
+theme_override_styles/disabled_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/disabled = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed = ExtResource("4_rtd1e")
+theme_override_styles/hover_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover = ExtResource("4_rtd1e")
+theme_override_styles/pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/pressed = ExtResource("4_rtd1e")
+theme_override_styles/normal_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/normal = ExtResource("4_rtd1e")
+text = "   Cancel   "
+
+[node name="GameCamera" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0.419064, 0.604069, -0.229731)
+
+[node name="OpponentView" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.419064, 0.604069, -0.0626983)
+
+[node name="MessageDialog" type="MarginContainer" parent="."]
+visible = false
+custom_minimum_size = Vector2(960, 540)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -480.0
+offset_top = -270.0
+offset_right = 480.0
+offset_bottom = 270.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="Panel" type="Panel" parent="MessageDialog"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_rtd1e")
+
+[node name="Controls" type="VBoxContainer" parent="MessageDialog/Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -326.5
+offset_top = -88.0
+offset_right = 326.5
+offset_bottom = 88.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="DialogMessageLbl" type="Label" parent="MessageDialog/Panel/Controls"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_2af52")
+theme_override_font_sizes/font_size = 64
+text = "Please input a valid code"
+horizontal_alignment = 1
+
+[node name="CancelDialogBtn" type="Button" parent="MessageDialog/Panel/Controls"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_11y2r")
+theme_override_font_sizes/font_size = 64
+theme_override_styles/focus = ExtResource("4_rtd1e")
+theme_override_styles/disabled_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/disabled = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed = ExtResource("4_rtd1e")
+theme_override_styles/hover_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover = ExtResource("4_rtd1e")
+theme_override_styles/pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/pressed = ExtResource("4_rtd1e")
+theme_override_styles/normal_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/normal = ExtResource("4_rtd1e")
+text = "   OK   "
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_jmdev")
+}
+autoplay = "fade_in"
+
+[node name="BGM" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_upctu")
+autoplay = true
+
+[node name="CharacterSelect" type="Node3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 1.51922, 0, 0)
+visible = false
+
+[node name="Character1" parent="CharacterSelect" instance=ExtResource("4_el213")]
+visible = false
+
+[node name="Character2" parent="CharacterSelect" instance=ExtResource("5_thu7x")]
+visible = false
+
+[node name="Character3" parent="CharacterSelect" instance=ExtResource("6_2af52")]
+visible = false
+
+[node name="Character4" parent="CharacterSelect" instance=ExtResource("7_7ycwl")]
+visible = false
+
+[node name="Character5" parent="CharacterSelect" instance=ExtResource("8_rtd1e")]
+visible = false
+
+[node name="Character6" parent="CharacterSelect" instance=ExtResource("9_6c8sk")]
+visible = false
+
+[node name="Character7" parent="CharacterSelect" instance=ExtResource("10_5p0sf")]
+visible = false
+
+[node name="Character8" parent="CharacterSelect" instance=ExtResource("11_7t7qg")]
+visible = false
+
+[node name="Character9" parent="CharacterSelect" instance=ExtResource("12_l3wcu")]
+visible = false
+
+[node name="GuestCharacters" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.585171, 0, -2.50496)
+visible = false
+
+[node name="Character1" parent="GuestCharacters" instance=ExtResource("4_el213")]
+visible = false
+
+[node name="Character2" parent="GuestCharacters" instance=ExtResource("5_thu7x")]
+visible = false
+
+[node name="Character3" parent="GuestCharacters" instance=ExtResource("6_2af52")]
+visible = false
+
+[node name="Character4" parent="GuestCharacters" instance=ExtResource("7_7ycwl")]
+visible = false
+
+[node name="Character5" parent="GuestCharacters" instance=ExtResource("8_rtd1e")]
+visible = false
+
+[node name="Character6" parent="GuestCharacters" instance=ExtResource("9_6c8sk")]
+visible = false
+
+[node name="Character7" parent="GuestCharacters" instance=ExtResource("10_5p0sf")]
+visible = false
+
+[node name="Character8" parent="GuestCharacters" instance=ExtResource("11_7t7qg")]
+visible = false
+
+[node name="Character9" parent="GuestCharacters" instance=ExtResource("12_l3wcu")]
+visible = false
+
+[node name="GuestName" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.585171, 0.800293, -2.50772)
+pixel_size = 0.001
+billboard = 1
+fixed_size = true
+texture_filter = 0
+text = "Username"
+font = ExtResource("16_rtd1e")
+font_size = 64
+outline_size = 8
+
+[node name="Opponent" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.40635, 0, -0.755031)
+visible = false
+
+[node name="Character1" parent="Opponent" instance=ExtResource("4_el213")]
+visible = false
+
+[node name="Character2" parent="Opponent" instance=ExtResource("5_thu7x")]
+visible = false
+
+[node name="Character3" parent="Opponent" instance=ExtResource("6_2af52")]
+visible = false
+
+[node name="Character4" parent="Opponent" instance=ExtResource("7_7ycwl")]
+visible = false
+
+[node name="Character5" parent="Opponent" instance=ExtResource("8_rtd1e")]
+visible = false
+
+[node name="Character6" parent="Opponent" instance=ExtResource("9_6c8sk")]
+visible = false
+
+[node name="Character7" parent="Opponent" instance=ExtResource("10_5p0sf")]
+visible = false
+
+[node name="Character8" parent="Opponent" instance=ExtResource("11_7t7qg")]
+visible = false
+
+[node name="Character9" parent="Opponent" instance=ExtResource("12_l3wcu")]
+visible = false
+
+[node name="OpponentName" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.40635, 0.800293, -0.757787)
+visible = false
+pixel_size = 0.001
+billboard = 1
+fixed_size = true
+texture_filter = 0
+text = "Username"
+font = ExtResource("16_rtd1e")
+font_size = 64
+outline_size = 8
+
+[connection signal="pressed" from="MainCamera/MainScreen/VBoxContainer/HostBtn" to="." method="_on_host_btn_pressed"]
+[connection signal="pressed" from="MainCamera/MainScreen/VBoxContainer/JoinBtn" to="." method="_on_join_btn_pressed"]
+[connection signal="pressed" from="MainCamera/MainScreen/VBoxContainer/CustomizeBtn" to="." method="_on_customize_btn_pressed"]
+[connection signal="pressed" from="MainCamera/MainScreen/VBoxContainer/CreditsBtn" to="." method="_on_credits_btn_pressed"]
+[connection signal="pressed" from="CustomizeCamera/CustomizeScreen/HBoxContainer/PrevBtn" to="." method="_on_prev_btn_pressed"]
+[connection signal="pressed" from="CustomizeCamera/CustomizeScreen/HBoxContainer/ConfirmCharBtn" to="." method="_on_confirm_char_btn_pressed"]
+[connection signal="pressed" from="CustomizeCamera/CustomizeScreen/HBoxContainer/NextBtn" to="." method="_on_next_btn_pressed"]
+[connection signal="pressed" from="PlayCamera/HostScreen/VBoxContainer/CancelHostBtn" to="." method="_on_cancel_host_btn_pressed"]
+[connection signal="pressed" from="PlayCamera/JoinScreen/VBoxContainer/Keys/0" to="." method="_on_key_pressed" binds= ["0"]]
+[connection signal="pressed" from="PlayCamera/JoinScreen/VBoxContainer/Keys/1" to="." method="_on_key_pressed" binds= ["1"]]
+[connection signal="pressed" from="PlayCamera/JoinScreen/VBoxContainer/Keys/2" to="." method="_on_key_pressed" binds= ["2"]]
+[connection signal="pressed" from="PlayCamera/JoinScreen/VBoxContainer/Keys/3" to="." method="_on_key_pressed" binds= ["3"]]
+[connection signal="pressed" from="PlayCamera/JoinScreen/VBoxContainer/Keys2/4" to="." method="_on_key_pressed" binds= ["4"]]
+[connection signal="pressed" from="PlayCamera/JoinScreen/VBoxContainer/Keys2/5" to="." method="_on_key_pressed" binds= ["5"]]
+[connection signal="pressed" from="PlayCamera/JoinScreen/VBoxContainer/Keys2/6" to="." method="_on_key_pressed" binds= ["6"]]
+[connection signal="pressed" from="PlayCamera/JoinScreen/VBoxContainer/Keys2/7" to="." method="_on_key_pressed" binds= ["7"]]
+[connection signal="pressed" from="PlayCamera/JoinScreen/VBoxContainer/Keys3/8" to="." method="_on_key_pressed" binds= ["8"]]
+[connection signal="pressed" from="PlayCamera/JoinScreen/VBoxContainer/Keys3/9" to="." method="_on_key_pressed" binds= ["9"]]
+[connection signal="pressed" from="PlayCamera/JoinScreen/VBoxContainer/Keys3/10" to="." method="_on_key_pressed" binds= ["A"]]
+[connection signal="pressed" from="PlayCamera/JoinScreen/VBoxContainer/Keys3/11" to="." method="_on_key_pressed" binds= ["B"]]
+[connection signal="pressed" from="PlayCamera/JoinScreen/VBoxContainer/Keys4/12" to="." method="_on_key_pressed" binds= ["C"]]
+[connection signal="pressed" from="PlayCamera/JoinScreen/VBoxContainer/Keys4/13" to="." method="_on_key_pressed" binds= ["D"]]
+[connection signal="pressed" from="PlayCamera/JoinScreen/VBoxContainer/Keys4/14" to="." method="_on_key_pressed" binds= ["E"]]
+[connection signal="pressed" from="PlayCamera/JoinScreen/VBoxContainer/Keys4/15" to="." method="_on_key_pressed" binds= ["F"]]
+[connection signal="pressed" from="PlayCamera/JoinScreen/VBoxContainer/HBoxContainer2/DeleteCharBtn" to="." method="_on_delete_char_btn_pressed"]
+[connection signal="pressed" from="PlayCamera/JoinScreen/VBoxContainer/HBoxContainer2/JoinGameBtn" to="." method="_on_join_game_btn_pressed"]
+[connection signal="pressed" from="PlayCamera/JoinScreen/VBoxContainer/HBoxContainer2/CancelJoinBtn" to="." method="_on_cancel_join_btn_pressed"]
+[connection signal="pressed" from="PlayCamera/MatchmakingScreen/VBoxContainer/CancelMatchmakeBtn" to="." method="_on_cancel_matchmake_btn_pressed"]
+[connection signal="pressed" from="MessageDialog/Panel/Controls/CancelDialogBtn" to="." method="_on_cancel_dialog_btn_pressed"]

@@ -11,9 +11,12 @@ config_version=5
 [application]
 
 config/name="power-plays"
-run/main_scene="uid://18u8tf1ef227"
+run/main_scene="uid://bshu48avhr84m"
 config/features=PackedStringArray("4.4", "Mobile")
-config/icon="uid://b3b5p58f40umg"
+boot_splash/bg_color=Color(1, 1, 1, 1)
+boot_splash/show_image=false
+config/icon="uid://bo0yc6b3m2kdf"
+config/main_scene="uid://bshu48avhr84m"
 
 [autoload]
 
@@ -36,3 +39,6 @@ textures/canvas_textures/default_texture_filter=0
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
 textures/vram_compression/import_etc2_astc=true
+lights_and_shadows/directional_shadow/size.mobile=4096
+lights_and_shadows/directional_shadow/soft_shadow_filter_quality=0
+environment/defaults/default_clear_color=Color(0, 0, 0, 1)
