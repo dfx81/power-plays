@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://dh5bep4wwtggd"]
+[gd_scene load_steps=29 format=3 uid="uid://dh5bep4wwtggd"]
 
 [ext_resource type="Script" uid="uid://cugjxceim0v8d" path="res://scripts/Game.gd" id="1_qbsmt"]
 [ext_resource type="PackedScene" uid="uid://bniga06ym5etf" path="res://scenes/Tile.tscn" id="2_cpr0p"]
@@ -10,6 +10,16 @@
 [ext_resource type="StyleBox" uid="uid://cp2di3n3p83gq" path="res://resources/SimpleStyleBox.tres" id="6_2rd6h"]
 [ext_resource type="FontFile" uid="uid://bcgv47u31ym88" path="res://assets/fonts/Tomorrow/Tomorrow-Italic.ttf" id="7_7ua8r"]
 [ext_resource type="FontFile" uid="uid://dcl7ct25nvtia" path="res://assets/fonts/Tomorrow/Tomorrow-Bold.ttf" id="9_r7sob"]
+[ext_resource type="AudioStream" uid="uid://cpvoqjaa4wlmh" path="res://assets/audio/win.ogg" id="11_45i86"]
+[ext_resource type="AudioStream" uid="uid://dhlmxhv34q5xb" path="res://assets/audio/lose.ogg" id="12_sv1m6"]
+[ext_resource type="AudioStream" uid="uid://u1vt8lnv3ahw" path="res://assets/audio/challenged.mp3" id="13_a8wo8"]
+[ext_resource type="AudioStream" uid="uid://rimqmnk5iryp" path="res://assets/audio/select-tile.ogg" id="14_attvq"]
+[ext_resource type="AudioStream" uid="uid://dm4fxbckfasx3" path="res://assets/audio/deselect-tile.ogg" id="15_bneo8"]
+[ext_resource type="AudioStream" uid="uid://sp0gu2kd8grg" path="res://assets/audio/mulligan.ogg" id="16_ocgqw"]
+[ext_resource type="AudioStream" uid="uid://7kf21gb6sru0" path="res://assets/audio/correct_ans.mp3" id="17_sv1m6"]
+[ext_resource type="AudioStream" uid="uid://dxhjr3k3ywun4" path="res://assets/audio/wrong.mp3" id="18_a85ww"]
+[ext_resource type="AudioStream" uid="uid://bgqsib8l7wty0" path="res://assets/audio/click.ogg" id="19_jhsr3"]
+[ext_resource type="AudioStream" uid="uid://coridi2bj7tpg" path="res://assets/audio/error.ogg" id="20_sv1m6"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qy1jj"]
 bg_color = Color(0, 0, 0, 1)
@@ -389,7 +399,7 @@ anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -216.0
+offset_top = -299.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_78awf")
@@ -428,7 +438,8 @@ layout_mode = 2
 size_flags_vertical = 6
 theme_override_fonts/font = ExtResource("3_qy1jj")
 theme_override_font_sizes/font_size = 64
-text = "   Challenge Lost (Opponent +10 pts)   "
+text = "   Challenge Lost (X = 0.00)
+Opponent +10 pts"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -888,6 +899,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_y5y3l")
 [node name="GameResults" type="Panel" parent="GameArea/Controls"]
 unique_name_in_owner = true
 visible = false
+z_index = 1
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1061,6 +1073,36 @@ libraries = {
 [node name="BGM" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_s0nni")
 autoplay = true
+
+[node name="WinSE" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("11_45i86")
+
+[node name="LoseSE" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("12_sv1m6")
+
+[node name="ChallengeSE" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("13_a8wo8")
+
+[node name="SelectSE" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("14_attvq")
+
+[node name="DeselectSE" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("15_bneo8")
+
+[node name="RedrawSE" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("16_ocgqw")
+
+[node name="CorrectSE" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("17_sv1m6")
+
+[node name="WrongSE" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("18_a85ww")
+
+[node name="ClickSE" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("19_jhsr3")
+
+[node name="ErrorSE" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("20_sv1m6")
 
 [connection signal="pressed" from="GameArea/Controls/PlayerInputs/DiscardBtn" to="." method="_on_discard_btn_pressed"]
 [connection signal="pressed" from="GameArea/Controls/PlayerInputs/SubmitBtn" to="." method="_on_submit_btn_pressed"]

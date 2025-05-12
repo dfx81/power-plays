@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://b0mb0qtgcf5qw"]
+[gd_scene load_steps=35 format=3 uid="uid://b0mb0qtgcf5qw"]
 
 [ext_resource type="Script" uid="uid://cdejxwlvl71y3" path="res://scripts/Menu.gd" id="1_thu7x"]
 [ext_resource type="PackedScene" uid="uid://dtp8mvdegalnq" path="res://scenes/Room.tscn" id="1_xdvgc"]
@@ -11,12 +11,23 @@
 [ext_resource type="PackedScene" uid="uid://c8yqs0u2imy0c" path="res://scenes/Character2.tscn" id="5_thu7x"]
 [ext_resource type="PackedScene" uid="uid://cgjpecdnxjctn" path="res://scenes/Character3.tscn" id="6_2af52"]
 [ext_resource type="PackedScene" uid="uid://bchjpm54wh1x5" path="res://scenes/Character4.tscn" id="7_7ycwl"]
+[ext_resource type="Texture2D" uid="uid://c3bj6s5x167mx" path="res://assets/images/musicOn.png" id="7_760fv"]
+[ext_resource type="FontFile" uid="uid://bcgv47u31ym88" path="res://assets/fonts/Tomorrow/Tomorrow-Italic.ttf" id="8_7t7qg"]
+[ext_resource type="Texture2D" uid="uid://c8ocffbpy3csq" path="res://assets/images/musicOff.png" id="8_rehui"]
 [ext_resource type="PackedScene" uid="uid://b51rid05ohawr" path="res://scenes/Character5.tscn" id="8_rtd1e"]
 [ext_resource type="PackedScene" uid="uid://ddn72kvkwgciy" path="res://scenes/Character6.tscn" id="9_6c8sk"]
 [ext_resource type="PackedScene" uid="uid://bibnnpwuai6x4" path="res://scenes/Character7.tscn" id="10_5p0sf"]
 [ext_resource type="PackedScene" uid="uid://cvd3blk88qadk" path="res://scenes/Character8.tscn" id="11_7t7qg"]
 [ext_resource type="PackedScene" uid="uid://dpix2sa5um08r" path="res://scenes/Character9.tscn" id="12_l3wcu"]
 [ext_resource type="FontFile" uid="uid://c3gkrvhsj8nwo" path="res://assets/fonts/Tomorrow/Tomorrow-Black.ttf" id="16_rtd1e"]
+[ext_resource type="Shader" uid="uid://ddfkcwkqwmqlp" path="res://shaders/Menu.gdshader" id="18_5p0sf"]
+[ext_resource type="AudioStream" uid="uid://bk28wre0bw8vt" path="res://assets/audio/doorbell.mp3" id="20_l3wcu"]
+[ext_resource type="AudioStream" uid="uid://bgqsib8l7wty0" path="res://assets/audio/click.ogg" id="21_i7htd"]
+[ext_resource type="AudioStream" uid="uid://coridi2bj7tpg" path="res://assets/audio/error.ogg" id="22_dek3k"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7t7qg"]
+shader = ExtResource("18_5p0sf")
+shader_parameter/scanline_count = 512.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o0tnf"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -45,6 +56,12 @@ expand_margin_left = 8.0
 expand_margin_top = 8.0
 expand_margin_right = 8.0
 expand_margin_bottom = 8.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_l3wcu"]
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rtd1e"]
 bg_color = Color(0, 0, 0, 1)
@@ -91,6 +108,18 @@ tracks/2/keys = {
 "update": 0,
 "values": [Vector3(0, -1.5708, 0)]
 }
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("ColorRect:mouse_filter")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
 
 [sub_resource type="Animation" id="Animation_11y2r"]
 resource_name = "fade_in"
@@ -105,6 +134,18 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Color(0, 0, 0, 1), Color(0, 0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ColorRect:mouse_filter")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [0, 2]
 }
 
 [sub_resource type="Animation" id="Animation_6c8sk"]
@@ -175,6 +216,15 @@ _data = {
 script = ExtResource("1_thu7x")
 game_scene = ExtResource("2_6c8sk")
 
+[node name="Shader" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_7t7qg")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
 [node name="Room" parent="." instance=ExtResource("1_xdvgc")]
 
 [node name="TransitionCam" type="Camera3D" parent="."]
@@ -186,7 +236,6 @@ current = true
 
 [node name="MainScreen" type="Control" parent="MainCamera"]
 unique_name_in_owner = true
-visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -275,6 +324,24 @@ theme_override_styles/pressed = ExtResource("4_rtd1e")
 theme_override_styles/normal_mirrored = ExtResource("4_rtd1e")
 theme_override_styles/normal = ExtResource("4_rtd1e")
 text = "   Credits   "
+
+[node name="AudioToggle" type="TextureButton" parent="MainCamera/MainScreen"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -50.0
+offset_top = 196.0
+offset_right = 50.0
+offset_bottom = 296.0
+grow_horizontal = 2
+grow_vertical = 2
+toggle_mode = true
+texture_normal = ExtResource("7_760fv")
+texture_pressed = ExtResource("8_rehui")
 
 [node name="CustomizeCamera" type="Camera3D" parent="."]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0.724749, 0.43158, 0.0267154)
@@ -419,6 +486,64 @@ theme_override_fonts/font = ExtResource("4_2af52")
 theme_override_font_sizes/font_size = 64
 text = "Host Code: XXXXXXXX"
 horizontal_alignment = 1
+
+[node name="MovesSettings" type="HBoxContainer" parent="PlayCamera/HostScreen/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PlayCamera/HostScreen/VBoxContainer/MovesSettings"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_11y2r")
+theme_override_font_sizes/font_size = 64
+text = "Moves:"
+
+[node name="MovesSettingBtn" type="Button" parent="PlayCamera/HostScreen/VBoxContainer/MovesSettings"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_11y2r")
+theme_override_font_sizes/font_size = 64
+theme_override_styles/focus = ExtResource("4_rtd1e")
+theme_override_styles/disabled_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/disabled = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed = ExtResource("4_rtd1e")
+theme_override_styles/hover_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover = ExtResource("4_rtd1e")
+theme_override_styles/pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/pressed = ExtResource("4_rtd1e")
+theme_override_styles/normal_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/normal = ExtResource("4_rtd1e")
+text = "5"
+
+[node name="DiscardSettings" type="HBoxContainer" parent="PlayCamera/HostScreen/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PlayCamera/HostScreen/VBoxContainer/DiscardSettings"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_11y2r")
+theme_override_font_sizes/font_size = 64
+text = "Discards:"
+
+[node name="DiscardSettingBtn" type="Button" parent="PlayCamera/HostScreen/VBoxContainer/DiscardSettings"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_11y2r")
+theme_override_font_sizes/font_size = 64
+theme_override_styles/focus = ExtResource("4_rtd1e")
+theme_override_styles/disabled_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/disabled = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed = ExtResource("4_rtd1e")
+theme_override_styles/hover_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover = ExtResource("4_rtd1e")
+theme_override_styles/pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/pressed = ExtResource("4_rtd1e")
+theme_override_styles/normal_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/normal = ExtResource("4_rtd1e")
+text = "5"
 
 [node name="CancelHostBtn" type="Button" parent="PlayCamera/HostScreen/VBoxContainer"]
 layout_mode = 2
@@ -915,22 +1040,60 @@ text = "   Cancel   "
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0.419064, 0.604069, -0.229731)
 
 [node name="OpponentView" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.419064, 0.604069, -0.0626983)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.419064, 0.48614, 0.155358)
 
-[node name="MessageDialog" type="MarginContainer" parent="."]
+[node name="ResponseWait" type="MarginContainer" parent="OpponentView"]
+unique_name_in_owner = true
 visible = false
-custom_minimum_size = Vector2(960, 540)
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -160.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="Panel" type="Panel" parent="OpponentView/ResponseWait"]
+self_modulate = Color(0, 0, 0, 1)
+custom_minimum_size = Vector2(0, 128)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_l3wcu")
+
+[node name="Label" type="Label" parent="OpponentView/ResponseWait/Panel"]
+layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -480.0
-offset_top = -270.0
-offset_right = 480.0
-offset_bottom = 270.0
+offset_left = -93.5
+offset_top = -38.0
+offset_right = 93.5
+offset_bottom = 38.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_fonts/font = ExtResource("8_7t7qg")
+theme_override_font_sizes/font_size = 64
+text = "Opponent is thinking..."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MessageDialog" type="MarginContainer" parent="."]
+visible = false
+z_index = 2
+custom_minimum_size = Vector2(960, 540)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
 theme_override_constants/margin_left = 16
 theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
@@ -982,12 +1145,12 @@ theme_override_styles/normal = ExtResource("4_rtd1e")
 text = "   OK   "
 
 [node name="ColorRect" type="ColorRect" parent="."]
+z_index = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
 color = Color(0, 0, 0, 1)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -1116,13 +1279,25 @@ font = ExtResource("16_rtd1e")
 font_size = 64
 outline_size = 8
 
+[node name="MatchFoundSE" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("20_l3wcu")
+
+[node name="ClickSE" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("21_i7htd")
+
+[node name="ErrorSE" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("22_dek3k")
+
 [connection signal="pressed" from="MainCamera/MainScreen/VBoxContainer/HostBtn" to="." method="_on_host_btn_pressed"]
 [connection signal="pressed" from="MainCamera/MainScreen/VBoxContainer/JoinBtn" to="." method="_on_join_btn_pressed"]
 [connection signal="pressed" from="MainCamera/MainScreen/VBoxContainer/CustomizeBtn" to="." method="_on_customize_btn_pressed"]
 [connection signal="pressed" from="MainCamera/MainScreen/VBoxContainer/CreditsBtn" to="." method="_on_credits_btn_pressed"]
+[connection signal="pressed" from="MainCamera/MainScreen/AudioToggle" to="." method="_on_audio_toggle_pressed"]
 [connection signal="pressed" from="CustomizeCamera/CustomizeScreen/HBoxContainer/PrevBtn" to="." method="_on_prev_btn_pressed"]
 [connection signal="pressed" from="CustomizeCamera/CustomizeScreen/HBoxContainer/ConfirmCharBtn" to="." method="_on_confirm_char_btn_pressed"]
 [connection signal="pressed" from="CustomizeCamera/CustomizeScreen/HBoxContainer/NextBtn" to="." method="_on_next_btn_pressed"]
+[connection signal="pressed" from="PlayCamera/HostScreen/VBoxContainer/MovesSettings/MovesSettingBtn" to="." method="_on_moves_setting_btn_pressed"]
+[connection signal="pressed" from="PlayCamera/HostScreen/VBoxContainer/DiscardSettings/DiscardSettingBtn" to="." method="_on_discard_setting_btn_pressed"]
 [connection signal="pressed" from="PlayCamera/HostScreen/VBoxContainer/CancelHostBtn" to="." method="_on_cancel_host_btn_pressed"]
 [connection signal="pressed" from="PlayCamera/JoinScreen/VBoxContainer/Keys/0" to="." method="_on_key_pressed" binds= ["0"]]
 [connection signal="pressed" from="PlayCamera/JoinScreen/VBoxContainer/Keys/1" to="." method="_on_key_pressed" binds= ["1"]]

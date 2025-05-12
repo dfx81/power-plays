@@ -18,17 +18,17 @@ func _process(_delta: float) -> void:
 	if has_bonus:
 		match (data.tile_mult):
 			2:
-				texture.self_modulate = Color.CORAL
+				self_modulate = Color.CORAL
 			3:
-				texture.self_modulate = Color.CRIMSON
+				self_modulate = Color.CRIMSON
 		
 		match (data.move_mult):
 			2:
-				texture.self_modulate = Color.AQUAMARINE
+				self_modulate = Color.AQUAMARINE
 			3:
-				texture.self_modulate = Color.DARK_CYAN
+				self_modulate = Color.DARK_CYAN
 	else:
-		texture.self_modulate = Color.WHITE
+		self_modulate = Color.WHITE
 
 func set_callbacks(select_cb: Callable, deselect_cb: Callable) -> void:
 	selected_callback = select_cb
@@ -65,6 +65,7 @@ func _to_string() -> String:
 func serialize() -> Dictionary[String, Variant]:
 	var result: Dictionary[String, Variant] = {
 		"score": data.score,
+		"has_bonus": has_bonus,
 		"tile_mult": data.tile_mult,
 		"move_mult": data.move_mult,
 		"component": data.component,

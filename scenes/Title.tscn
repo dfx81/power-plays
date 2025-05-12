@@ -1,12 +1,17 @@
-[gd_scene load_steps=14 format=3 uid="uid://bshu48avhr84m"]
+[gd_scene load_steps=16 format=3 uid="uid://bshu48avhr84m"]
 
 [ext_resource type="Script" uid="uid://t6u7td5ms1if" path="res://scripts/Title.gd" id="1_6rdx8"]
 [ext_resource type="Texture2D" uid="uid://by50jq8m06vsl" path="res://assets/images/kmk-logo.png" id="1_lq0lj"]
 [ext_resource type="Texture2D" uid="uid://dj1adthb4xkku" path="res://assets/images/qlyco-logo.png" id="2_2sdm5"]
+[ext_resource type="Shader" uid="uid://cb087ulyp1fv7" path="res://shaders/Title.gdshader" id="2_wq2ky"]
 [ext_resource type="PackedScene" uid="uid://dtp8mvdegalnq" path="res://scenes/Room.tscn" id="4_agd63"]
 [ext_resource type="AudioStream" uid="uid://dohuvsy7vn6w4" path="res://assets/audio/light-rain-loop.wav" id="7_mh4yb"]
 [ext_resource type="FontFile" uid="uid://dn6wiqyu1tcis" path="res://assets/fonts/Tomorrow/Tomorrow-SemiBold.ttf" id="14_qwemb"]
 [ext_resource type="PackedScene" uid="uid://ds6u1m1ipdltc" path="res://scenes/Character1.tscn" id="15_6ptrc"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wq2ky"]
+shader = ExtResource("2_wq2ky")
+shader_parameter/scanline_count = 512.0
 
 [sub_resource type="Animation" id="Animation_2sdm5"]
 length = 0.001
@@ -138,6 +143,15 @@ script = ExtResource("1_6rdx8")
 transform = Transform3D(0.863633, 0, 0.504121, 0, 1, 0, -0.504121, 0, 0.863633, 0.62, 0.722403, 1.19097)
 size = 2.282
 
+[node name="Shader" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_wq2ky")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
 [node name="Control" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 15
@@ -153,6 +167,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 
 [node name="KMKSplash" type="TextureRect" parent="Control"]
 self_modulate = Color(1, 1, 1, 0)

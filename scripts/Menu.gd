@@ -7,6 +7,9 @@ var players: Dictionary[int, Variant] = {}
 var matchmaking: bool = false
 var game: Game = null
 
+var moves: int = 5
+var discards: int = 5
+
 var has_error: bool = false
 
 var you: int = 0
@@ -14,6 +17,10 @@ var opponent: int = 0
 var game_running = false
 
 func _ready() -> void:
+	var audio_bus: int = AudioServer.get_bus_index("Master")
+	AudioServer.set_bus_mute(audio_bus, Globals.audio_state != 1)
+	%AudioToggle.button_pressed = Globals.audio_state == 2
+	
 	$BGM.volume_linear = 1
 	%MainScreen.visible = true
 	
@@ -31,9 +38,13 @@ func _ready() -> void:
 	multiplayer.connection_failed.connect(on_connection_failed)
 
 @rpc("call_local", "reliable")
-func load_game():
+func load_game(set_moves: int, set_discards: int):
 	var game_instance: Game = game_scene.instantiate()
 	game_instance.players = players
+	game_instance.moves = set_moves
+	game_instance.opponent_moves = set_moves
+	game_instance.discards = set_discards
+	game_instance.opponent_discards = set_discards
 	game_instance.disconnect_from_game.connect(end_game)
 	game_instance.view_board.connect(view_board)
 	game_instance.view_opponent.connect(view_opponent)
@@ -53,7 +64,10 @@ func game_ended():
 	game_running = false
 
 func opponent_play_anim_place_tile():
-	#$Opponent.get_child(players[opponent]["char"]).get_node("AnimationPlayer").play("interact-right")
+	var animator: AnimationPlayer = $Opponent.get_child(players[opponent]["char"]).get_node("AnimationPlayer")
+	animator.play("interact-right")
+	await animator.animation_finished
+	animator.play("idle")
 	pass
 	
 func opponent_play_anim_nod():
@@ -66,13 +80,19 @@ func opponent_play_anim_shake():
 
 func view_board():
 	$GameCamera.current = true
+	%ResponseWait.visible = false
 	game.visible = true
 	
 func view_opponent():
 	$OpponentView.current = true
+	%ResponseWait.visible = true
 	game.visible = false
 
 func end_game():
+	$AnimationPlayer.play_backwards("fade_in")
+	await $AnimationPlayer.animation_finished
+	game.fade_song()
+	await game.audio_muted
 	game.queue_free()
 	multiplayer.multiplayer_peer = null
 	game = null
@@ -88,6 +108,8 @@ func on_player_connected(id: int):
 		%MatchmakingScreen.visible = false
 		
 	$GuestCharacters.visible = true
+	$MatchFoundSE.play()
+	await $MatchFoundSE.finished
 	$Room/AnimationPlayer.play("open_door")
 	await $Room/AnimationPlayer.animation_finished
 	$AnimationPlayer.play_backwards("fade_in")
@@ -106,7 +128,7 @@ func on_player_connected(id: int):
 	$AnimationPlayer.play("fade_in")
 	
 	if multiplayer.is_server():
-		load_game.rpc()
+		load_game.rpc(moves, discards)
 
 @rpc("any_peer", "reliable")
 func send_info(username: String, selected_char: int) -> void:
@@ -120,6 +142,7 @@ func send_info(username: String, selected_char: int) -> void:
 
 func on_player_disconnected(id: int):
 	if game_running:
+		$ErrorSE.play()
 		%DialogMessageLbl.text = players[id]["name"] + " disconnected"
 		has_error = true
 		$MessageDialog.visible = true
@@ -129,17 +152,19 @@ func on_server_connected():
 
 func on_server_disconnected():
 	if game_running:
+		$ErrorSE.play()
 		%DialogMessageLbl.text = "Disconnected from host"
 		has_error = true
 		$MessageDialog.visible = true
 	
 func on_connection_failed():
-	if game_running:
-		%DialogMessageLbl.text = "Connection failed"
-		has_error = true
-		$MessageDialog.visible = true
+	$ErrorSE.play()
+	%DialogMessageLbl.text = "Connection failed"
+	has_error = true
+	$MessageDialog.visible = true
 
 func _on_customize_btn_pressed() -> void:
+	$ClickSE.play()
 	var characters: Array[Node] = $CharacterSelect.get_children()
 	%MainScreen.visible = false
 	$CharacterSelect.visible = true
@@ -152,6 +177,7 @@ func _on_customize_btn_pressed() -> void:
 	$CustomizeCamera.current = true
 
 func _on_confirm_char_btn_pressed() -> void:
+	$ClickSE.play()
 	var characters: Array[Node] = $CharacterSelect.get_children()
 	Globals.player_name = %PlayerNameInput.text
 	%CustomizeScreen.visible = false
@@ -165,6 +191,7 @@ func _on_confirm_char_btn_pressed() -> void:
 	$MainCamera.current = true
 
 func _on_prev_btn_pressed() -> void:
+	$ClickSE.play()
 	var characters: Array[Node] = $CharacterSelect.get_children()
 	characters[Globals.selected_char].visible = false
 	Globals.selected_char -= 1
@@ -175,6 +202,7 @@ func _on_prev_btn_pressed() -> void:
 	characters[Globals.selected_char].visible = true
 
 func _on_next_btn_pressed() -> void:
+	$ClickSE.play()
 	var characters: Array[Node] = $CharacterSelect.get_children()
 	characters[Globals.selected_char].visible = false
 	Globals.selected_char += 1
@@ -185,6 +213,8 @@ func _on_next_btn_pressed() -> void:
 	characters[Globals.selected_char].visible = true
 
 func _on_cancel_host_btn_pressed() -> void:
+	$ErrorSE.play()
+	
 	if peer:
 		multiplayer.multiplayer_peer = null
 		players.clear()
@@ -199,16 +229,19 @@ func _on_cancel_host_btn_pressed() -> void:
 	%MainScreen.visible = true
 
 func _on_delete_char_btn_pressed() -> void:
+	$ClickSE.play()
 	var cur_text: String = %HostCodeInput.text
 	%HostCodeInput.text = cur_text.substr(0, len(cur_text) - 1)
 
 func _on_join_game_btn_pressed() -> void:
+	$ClickSE.play()
 	var host_code: String = %HostCodeInput.text
 	
 	host_code.strip_edges()
 	
 	if len(host_code) != 8:
-		%ErrMessageLbl.text = "Please enter a valid code"
+		$ErrorSE.play()
+		%DialogMessageLbl.text = "Please enter a valid code"
 		$MessageDialog.visible = true
 	else:
 		var address: String = str(host_code.substr(0, 2).to_lower().hex_to_int()) + "." + str(host_code.substr(2, 2).to_lower().hex_to_int()) + "." + str(host_code.substr(4, 2).to_lower().hex_to_int()) + "." + str(host_code.substr(6, 2).to_lower().hex_to_int())
@@ -229,6 +262,7 @@ func _on_join_game_btn_pressed() -> void:
 	%HostCodeInput.text = ""
 
 func _on_cancel_join_btn_pressed() -> void:
+	$ErrorSE.play()
 	%HostCodeInput.text = ""
 	%JoinScreen.visible = false
 	$AnimationPlayer.play_backwards("main_door")
@@ -238,9 +272,11 @@ func _on_cancel_join_btn_pressed() -> void:
 	%MainScreen.visible = true
 
 func _on_key_pressed(key: String) -> void:
+	$ClickSE.play()
 	%HostCodeInput.text += key if len(%HostCodeInput.text) < 8 else ""
 
 func _on_host_btn_pressed() -> void:
+	$ClickSE.play()
 	players = {}
 	var address: String
 
@@ -268,6 +304,11 @@ func _on_host_btn_pressed() -> void:
 	
 	for part in ip_parts:
 		address += ("%X" % int(part)).lpad(2, "0")
+	
+	if len(address) < 8:
+		%DialogMessageLbl.text = "Please connect to a Wifi network."
+		$MessageDialog.visible = true
+		return
 		
 	%HostCodeLbl.text = "Host Code: %s" % address
 	
@@ -293,6 +334,7 @@ func _on_host_btn_pressed() -> void:
 	matchmaking = true
 
 func _on_join_btn_pressed() -> void:
+	$ClickSE.play()
 	%MainScreen.visible = false
 	$AnimationPlayer.play("main_door")
 	$TransitionCam.current = true
@@ -301,6 +343,7 @@ func _on_join_btn_pressed() -> void:
 	%JoinScreen.visible = true
 
 func _on_cancel_dialog_btn_pressed() -> void:
+	$ClickSE.play()
 	$MessageDialog.visible = false
 	
 	if has_error:
@@ -315,15 +358,51 @@ func _on_cancel_dialog_btn_pressed() -> void:
 		get_tree().reload_current_scene()
 
 func _on_cancel_matchmake_btn_pressed() -> void:
+	$ClickSE.play()
 	if peer:
+		peer.close()
 		multiplayer.multiplayer_peer = null
 		players.clear()
 		peer = null
 		matchmaking = false
 	
 	%MatchmakingScreen.visible = false
-	%JoinScreen.visible = false
+	%JoinScreen.visible = true
 
 
 func _on_credits_btn_pressed() -> void:
 	pass # Replace with function body.
+
+
+func _on_moves_setting_btn_pressed() -> void:
+	$ClickSE.play()
+	moves += 2
+	
+	if moves > 7:
+		moves = 3
+		
+	%MovesSettingBtn.text = str(moves)
+
+
+func _on_discard_setting_btn_pressed() -> void:
+	$ClickSE.play()
+	discards += 2
+	
+	if discards > 7:
+		discards = 3
+	
+	%DiscardSettingBtn.text = str(discards)
+
+
+func _on_audio_toggle_pressed() -> void:
+	$ClickSE.play()
+	
+	if Globals.audio_state == 1:
+		Globals.audio_state = 2
+	else:
+		Globals.audio_state = 1
+	
+	var audio_bus: int = AudioServer.get_bus_index("Master")
+	AudioServer.set_bus_mute(audio_bus, Globals.audio_state != 1)
+	
+	Globals.save_data()

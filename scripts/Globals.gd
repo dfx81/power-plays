@@ -37,6 +37,7 @@ var indices_tile_data : Array[TileModel] = [
 
 var selected_char: int = 0
 var player_name: String = "Player"
+var audio_state: int = 1
 
 const SAVE_PATH: String = "user://save.data"
 
@@ -46,6 +47,7 @@ func save_data():
 	if file:
 		file.store_8(selected_char)
 		file.store_line(player_name)
+		file.store_8(audio_state)
 		file.close()
 	
 func load_data():
@@ -54,4 +56,9 @@ func load_data():
 	if file:
 		selected_char = file.get_8()
 		player_name = file.get_line()
+		audio_state = file.get_8()
+		
+		if !audio_state:
+			audio_state = 1
+		
 		file.close()

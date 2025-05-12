@@ -7,6 +7,10 @@ func _ready():
 	$AudioStreamPlayer.volume_linear = .5
 	Globals.load_data()
 	
+	var audio_bus: int = AudioServer.get_bus_index("Master")
+	print(Globals.audio_state)
+	AudioServer.set_bus_mute(audio_bus, Globals.audio_state != 1)
+	
 	if randf() >= .75:
 		$Ghost.visible = true
 	else:
@@ -27,3 +31,4 @@ func _on_control_gui_input(event: InputEvent) -> void:
 func _on_splash_player_animation_finished(anim_name: StringName) -> void:
 	if anim_name == "splash_op":
 		can_proceed = true
+		print("CAN PROCEED")
