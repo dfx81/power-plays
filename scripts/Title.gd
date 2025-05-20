@@ -4,6 +4,8 @@ var can_proceed: bool = false
 var menu: PackedScene = preload("res://scenes/Menu.tscn")
 
 func _ready():
+	$Version.text = "V%s-%s-%s" % [ProjectSettings.get_setting("application/config/version"), OS.get_name(), RenderingServer.get_current_rendering_method()]
+	
 	$AudioStreamPlayer.volume_linear = .5
 	Globals.load_data()
 	

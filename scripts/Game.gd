@@ -21,6 +21,7 @@ var opponent_id: int = 0
 var player_id: int = 0
 
 @export var tile_scene : PackedScene
+@export var tile_mod : PackedScene
 @onready var host_hand : Control = $"GameArea/Controls/Host Hand"
 @onready var client_hand : Control = $"GameArea/Controls/Client Hand"
 @onready var preview : Control = $"GameArea/Controls/Move Preview"
@@ -156,9 +157,15 @@ func draw_tiles(bonuses: int = -1):
 				
 				match (chance):
 					0:
-						t.data.tile_mult = 2
+						if t.data.score != 0:
+							t.data.tile_mult = 2
+						else:
+							t.data.move_mult = 2
 					1:
-						t.data.tile_mult = 3
+						if t.data.score != 0:
+							t.data.tile_mult = 3
+						else:
+							t.data.move_mult = 3
 					2:
 						t.data.move_mult = 2
 					3:
@@ -321,9 +328,12 @@ func update_preview():
 	
 	for tile in current_move:
 		var tile_texture: TextureRect = TextureRect.new()
+		var tile_score: Label = tile_mod.instantiate()
+		var tile_mult: Label = tile_mod.instantiate()
+		
 		tile_texture.texture = load(tile.data.texture_path)
 		tile_texture.size = Vector2i(128, 128)
-		tile_texture.modulate = Color.TRANSPARENT
+		tile_texture.self_modulate = Color.TRANSPARENT
 		
 		var modulate_target: Color = Color.WHITE
 		
@@ -339,13 +349,24 @@ func update_preview():
 					modulate_target = Color.AQUAMARINE
 				3:
 					modulate_target = Color.DARK_CYAN
+					
+		tile_score.text = "+%d" % (tile.data.score * tile.data.tile_mult)
+		tile_mult.text = "X%d" % tile.data.move_mult
 		
 		tile_texture.self_modulate = modulate_target
+		tile_score.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT, Control.PRESET_MODE_MINSIZE)
+		tile_mult.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_RIGHT, Control.PRESET_MODE_MINSIZE)
+		tile_texture.add_child(tile_score)
+		tile_texture.add_child(tile_mult)
 		
-		tile_texture.connect("tree_entered", func(): await get_tree().create_tween().tween_property(tile_texture, "modulate", modulate_target, .125).finished)
+		tile_texture.connect("tree_entered", func(): await get_tree().create_tween().tween_property(tile_texture, "self_modulate", modulate_target, .125).finished)
 		preview.add_child(tile_texture)
+		
+		%ScorePreview.text = "MOVE SCORE: %d pts" % calculate_eqn_score()
 
 func reset_preview():
+	%ScorePreview.text = "MOVE SCORE: %d pts" % calculate_eqn_score()
+	
 	for item in preview.get_children():
 		preview.remove_child(item)
 

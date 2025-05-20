@@ -10,7 +10,8 @@ config_version=5
 
 [application]
 
-config/name="power-plays"
+config/name="I.N.D.E.X"
+config/version="1.0"
 run/main_scene="uid://bshu48avhr84m"
 config/features=PackedStringArray("4.4", "Mobile")
 boot_splash/bg_color=Color(1, 1, 1, 1)

@@ -1,9 +1,10 @@
-[gd_scene load_steps=16 format=3 uid="uid://bshu48avhr84m"]
+[gd_scene load_steps=18 format=3 uid="uid://bshu48avhr84m"]
 
 [ext_resource type="Script" uid="uid://t6u7td5ms1if" path="res://scripts/Title.gd" id="1_6rdx8"]
 [ext_resource type="Texture2D" uid="uid://by50jq8m06vsl" path="res://assets/images/kmk-logo.png" id="1_lq0lj"]
 [ext_resource type="Texture2D" uid="uid://dj1adthb4xkku" path="res://assets/images/qlyco-logo.png" id="2_2sdm5"]
 [ext_resource type="Shader" uid="uid://cb087ulyp1fv7" path="res://shaders/Title.gdshader" id="2_wq2ky"]
+[ext_resource type="FontFile" uid="uid://c4t18erth06sl" path="res://assets/fonts/Roboto/static/Roboto-Black.ttf" id="3_uth7j"]
 [ext_resource type="PackedScene" uid="uid://dtp8mvdegalnq" path="res://scenes/Room.tscn" id="4_agd63"]
 [ext_resource type="AudioStream" uid="uid://dohuvsy7vn6w4" path="res://assets/audio/light-rain-loop.wav" id="7_mh4yb"]
 [ext_resource type="FontFile" uid="uid://dn6wiqyu1tcis" path="res://assets/fonts/Tomorrow/Tomorrow-SemiBold.ttf" id="14_qwemb"]
@@ -12,6 +13,12 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wq2ky"]
 shader = ExtResource("2_wq2ky")
 shader_parameter/scanline_count = 512.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_af2l1"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
 
 [sub_resource type="Animation" id="Animation_2sdm5"]
 length = 0.001
@@ -152,6 +159,18 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
+[node name="Version" type="Label" parent="."]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -35.0
+offset_right = 100.0
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("3_uth7j")
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxEmpty_af2l1")
+text = "V1.0"
+
 [node name="Control" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 15
@@ -223,7 +242,7 @@ autoplay = "prompt"
 
 [node name="Label3D" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.248019, 0.929065, -1.6887)
-text = "POWER PLAYS"
+text = "I.N.D.E.X"
 font = ExtResource("14_qwemb")
 font_size = 48
 outline_size = 0

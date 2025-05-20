@@ -14,21 +14,23 @@ var enabled: bool = false
 
 func _process(_delta: float) -> void:
 	texture.texture = load(data.texture_path)
+	%TileGraphic.self_modulate = Color.WHITE
 	
 	if has_bonus:
 		match (data.tile_mult):
 			2:
-				self_modulate = Color.CORAL
+				%TileGraphic.self_modulate = Color.CORAL
 			3:
-				self_modulate = Color.CRIMSON
+				%TileGraphic.self_modulate = Color.CRIMSON
 		
 		match (data.move_mult):
 			2:
-				self_modulate = Color.AQUAMARINE
+				%TileGraphic.self_modulate = Color.AQUAMARINE
 			3:
-				self_modulate = Color.DARK_CYAN
-	else:
-		self_modulate = Color.WHITE
+				%TileGraphic.self_modulate = Color.DARK_CYAN
+	
+	%Mult.text = "X%d" % data.move_mult
+	%Value.text = "+%d" % (data.score * data.tile_mult)
 
 func set_callbacks(select_cb: Callable, deselect_cb: Callable) -> void:
 	selected_callback = select_cb

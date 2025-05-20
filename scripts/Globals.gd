@@ -33,6 +33,15 @@ var indices_tile_data : Array[TileModel] = [
 	TileModel.new(1, 1, 1, "pow(2, (1 - x))", "res://assets/images/tile-21-x.png", "INDICES"),
 	TileModel.new(1, 1, 1, "pow(2, (2 * x + 1))", "res://assets/images/tile-22x+1.png", "INDICES"),
 	TileModel.new(1, 1, 1, "pow(2, (2 * x - 1))", "res://assets/images/tile-22x-1.png", "INDICES"),
+	TileModel.new(1, 1, 1, "pow(3, x)", "res://assets/images/tile-3x.png", "INDICES"),
+	TileModel.new(1, 1, 1, "pow(3, (x + 1))", "res://assets/images/tile-3x+1.png", "INDICES"),
+	TileModel.new(1, 1, 1, "pow(3, (x - 1))", "res://assets/images/tile-3x-1.png", "INDICES"),
+	TileModel.new(1, 1, 1, "pow(3, (x + 2))", "res://assets/images/tile-3x+2.png", "INDICES"),
+	TileModel.new(1, 1, 1, "pow(3, (x - 2))", "res://assets/images/tile-3x-2.png", "INDICES"),
+	TileModel.new(1, 1, 1, "pow(3, (2 * x))", "res://assets/images/tile-32x.png", "INDICES"),
+	TileModel.new(1, 1, 1, "pow(3, (1 - x))", "res://assets/images/tile-31-x.png", "INDICES"),
+	TileModel.new(1, 1, 1, "pow(3, (2 * x + 1))", "res://assets/images/tile-32x+1.png", "INDICES"),
+	TileModel.new(1, 1, 1, "pow(3, (2 * x - 1))", "res://assets/images/tile-32x-1.png", "INDICES"),
 ]
 
 var selected_char: int = 0

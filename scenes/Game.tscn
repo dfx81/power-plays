@@ -1,7 +1,8 @@
-[gd_scene load_steps=29 format=3 uid="uid://dh5bep4wwtggd"]
+[gd_scene load_steps=30 format=3 uid="uid://dh5bep4wwtggd"]
 
 [ext_resource type="Script" uid="uid://cugjxceim0v8d" path="res://scripts/Game.gd" id="1_qbsmt"]
 [ext_resource type="PackedScene" uid="uid://bniga06ym5etf" path="res://scenes/Tile.tscn" id="2_cpr0p"]
+[ext_resource type="PackedScene" uid="uid://c07ud07isy441" path="res://scenes/Modifier.tscn" id="3_a8wo8"]
 [ext_resource type="FontFile" uid="uid://8qnlr5wdpc05" path="res://assets/fonts/Tomorrow/Tomorrow-Light.ttf" id="3_qy1jj"]
 [ext_resource type="FontFile" uid="uid://tfixpc457s7t" path="res://assets/fonts/Tomorrow/Tomorrow-ExtraBold.ttf" id="4_3xj3m"]
 [ext_resource type="FontFile" uid="uid://cv053v58v05nd" path="res://assets/fonts/Roboto/Roboto-VariableFont_wdth,wght.ttf" id="4_78awf"]
@@ -97,6 +98,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_qbsmt")
 tile_scene = ExtResource("2_cpr0p")
+tile_mod = ExtResource("3_a8wo8")
 
 [node name="GameArea" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -210,6 +212,7 @@ offset_top = -208.0
 offset_bottom = -80.0
 grow_horizontal = 2
 grow_vertical = 0
+theme_override_constants/separation = 8
 alignment = 1
 
 [node name="Client Hand" type="HBoxContainer" parent="GameArea/Controls"]
@@ -223,7 +226,23 @@ offset_top = -208.0
 offset_bottom = -80.0
 grow_horizontal = 2
 grow_vertical = 0
+theme_override_constants/separation = 8
 alignment = 1
+
+[node name="ScorePreview" type="Label" parent="GameArea/Controls"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 171.0
+offset_bottom = 210.0
+grow_horizontal = 2
+size_flags_vertical = 6
+theme_override_fonts/font = ExtResource("3_qy1jj")
+theme_override_font_sizes/font_size = 32
+text = "MOVE SCORE: 0"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Move Preview" type="HBoxContainer" parent="GameArea/Controls"]
 custom_minimum_size = Vector2(0, 128)
@@ -236,6 +255,7 @@ offset_top = -448.0
 offset_bottom = -320.0
 grow_horizontal = 2
 grow_vertical = 0
+theme_override_constants/separation = 8
 alignment = 1
 
 [node name="PlayerInputs" type="HBoxContainer" parent="GameArea/Controls"]
