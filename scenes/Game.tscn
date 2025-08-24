@@ -940,10 +940,15 @@ theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
-[node name="Control" type="Control" parent="GameArea/Controls/GameResults/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="GameArea/Controls/GameResults/MarginContainer"]
 layout_mode = 2
+theme_override_constants/separation = 16
 
-[node name="Result" type="Label" parent="GameArea/Controls/GameResults/MarginContainer/Control"]
+[node name="Control" type="Control" parent="GameArea/Controls/GameResults/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Result" type="Label" parent="GameArea/Controls/GameResults/MarginContainer/HBoxContainer/Control"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 5
@@ -959,39 +964,37 @@ text = "YOU WIN"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="GameArea/Controls/GameResults/MarginContainer/Control"]
+[node name="VBoxContainer" type="VBoxContainer" parent="GameArea/Controls/GameResults/MarginContainer/HBoxContainer/Control"]
 layout_mode = 1
 anchors_preset = 14
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
 offset_top = -58.5
-offset_bottom = 58.5
+offset_bottom = 73.5
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 16
 
-[node name="PlayerResult" type="Label" parent="GameArea/Controls/GameResults/MarginContainer/Control/HBoxContainer"]
+[node name="PlayerResult" type="Label" parent="GameArea/Controls/GameResults/MarginContainer/HBoxContainer/Control/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("3_qy1jj")
 theme_override_font_sizes/font_size = 48
 text = "You: 0 pts"
-horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="OpponentResult" type="Label" parent="GameArea/Controls/GameResults/MarginContainer/Control/HBoxContainer"]
+[node name="OpponentResult" type="Label" parent="GameArea/Controls/GameResults/MarginContainer/HBoxContainer/Control/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("3_qy1jj")
 theme_override_font_sizes/font_size = 48
 text = "Opponent: 0 pts"
-horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Button" type="Button" parent="GameArea/Controls/GameResults/MarginContainer/Control"]
+[node name="Button" type="Button" parent="GameArea/Controls/GameResults/MarginContainer/HBoxContainer/Control"]
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
@@ -1014,6 +1017,49 @@ theme_override_styles/pressed = ExtResource("6_2rd6h")
 theme_override_styles/normal_mirrored = ExtResource("6_2rd6h")
 theme_override_styles/normal = ExtResource("6_2rd6h")
 text = "Quit Match"
+
+[node name="Logs" type="VBoxContainer" parent="GameArea/Controls/GameResults/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="History" type="Label" parent="GameArea/Controls/GameResults/MarginContainer/HBoxContainer/Logs"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("9_r7sob")
+theme_override_font_sizes/font_size = 64
+text = "YOUR MOVES"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="GameArea/Controls/GameResults/MarginContainer/HBoxContainer/Logs"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Moves" type="Label" parent="GameArea/Controls/GameResults/MarginContainer/HBoxContainer/Logs/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("3_qy1jj")
+theme_override_font_sizes/font_size = 48
+vertical_alignment = 1
+
+[node name="SaveButton" type="Button" parent="GameArea/Controls/GameResults/MarginContainer/HBoxContainer/Logs"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_qy1jj")
+theme_override_font_sizes/font_size = 64
+theme_override_styles/focus = ExtResource("6_2rd6h")
+theme_override_styles/disabled_mirrored = ExtResource("6_2rd6h")
+theme_override_styles/disabled = ExtResource("6_2rd6h")
+theme_override_styles/hover_pressed_mirrored = ExtResource("6_2rd6h")
+theme_override_styles/hover_pressed = ExtResource("6_2rd6h")
+theme_override_styles/hover_mirrored = ExtResource("6_2rd6h")
+theme_override_styles/hover = ExtResource("6_2rd6h")
+theme_override_styles/pressed_mirrored = ExtResource("6_2rd6h")
+theme_override_styles/pressed = ExtResource("6_2rd6h")
+theme_override_styles/normal_mirrored = ExtResource("6_2rd6h")
+theme_override_styles/normal = ExtResource("6_2rd6h")
+text = "Save Logs"
 
 [node name="GameDisconnect" type="Panel" parent="GameArea/Controls"]
 unique_name_in_owner = true
@@ -1146,5 +1192,6 @@ stream = ExtResource("20_sv1m6")
 [connection signal="pressed" from="GameArea/Controls/Response Container/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer2/No Solution" to="." method="_on_no_solution_pressed"]
 [connection signal="pressed" from="GameArea/Controls/Response Container/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer2/Submit Solution" to="." method="_on_submit_solution_pressed"]
 [connection signal="visibility_changed" from="GameArea/Controls/GameResults" to="." method="_on_game_results_visibility_changed"]
-[connection signal="pressed" from="GameArea/Controls/GameResults/MarginContainer/Control/Button" to="." method="_on_quit_pressed"]
+[connection signal="pressed" from="GameArea/Controls/GameResults/MarginContainer/HBoxContainer/Control/Button" to="." method="_on_quit_pressed"]
+[connection signal="pressed" from="GameArea/Controls/GameResults/MarginContainer/HBoxContainer/Logs/SaveButton" to="." method="_on_save_log_button_pressed"]
 [connection signal="pressed" from="GameArea/Controls/GameDisconnect/MarginContainer/Control/Button" to="." method="_on_quit_pressed"]

@@ -50,12 +50,16 @@ var running: bool = false
 
 var ended: int = 0
 
+var move_logs: Array[String] = []
+var opponent_logs: Array[String] = []
+
 func _ready() -> void:
 	$BGM.volume_linear = 1
 	setup()
 	draw_tiles()
 	show_hands()
 
+# Update game info on screen (scores, moves, etc)
 func _process(_delta: float) -> void:
 	%TurnLbl.text = str(turn)
 	%PlayerScore.text = "   YOUR SCORE: %d" % your_score
@@ -63,6 +67,7 @@ func _process(_delta: float) -> void:
 	%OpponentScore.text = "OPPONENT SCORE: %d   " % opponent_score
 	%OpponentMoves.text = "%d MOVES, %d DISCARDS   " % [opponent_moves, opponent_discards]
 
+# Setup the game at the start
 func setup():
 	player_id = multiplayer.get_unique_id()
 	
@@ -77,6 +82,7 @@ func setup():
 	on_new_turn_start.connect(turn_start)
 	turn_start()
 
+# Callback when the game has ended
 @rpc("any_peer", "call_local", "reliable")
 func has_ended():
 	ended += 1
@@ -85,16 +91,19 @@ func has_ended():
 		emit_signal("game_end")
 		%GameResults.visible = true
 
+# Called when a player's turn begins
 func turn_start():
 	if !running:
 		running = true
 		emit_signal("game_start")
 	
+	# Check whose turn it is
 	var your_turn: bool = turn % 2 == 0 if multiplayer.is_server() else turn % 2 != 0
 	print("Your turn" if your_turn else "Opponent's turn")
 	
 	%TurnIndicator.text = "YOUR\nTURN" if your_turn else "OPPONENT'S\nTURN"
 	
+	# Then update the display correctly
 	if your_turn:
 		emit_signal("view_board")
 	else:
@@ -102,6 +111,9 @@ func turn_start():
 	
 	%Animator.play("show_turn")
 
+# Add tiles into player's hand
+# If the player is entitled to bonuses, make sure the correct amount is added
+# to hand
 func draw_tiles(bonuses: int = -1):
 	var has_eql: bool = false
 	
@@ -145,7 +157,6 @@ func draw_tiles(bonuses: int = -1):
 	if bonuses != -1:
 		entitled_bonuses = bonuses
 	
-	
 	print("Entitled bonus: " + str(entitled_bonuses))
 	
 	all_tiles.shuffle()
@@ -175,12 +186,14 @@ func draw_tiles(bonuses: int = -1):
 				
 				entitled_bonuses -= 1
 
+# Remove all tiles in hand
 func clear_hands():
 	var hand: Control = host_hand if multiplayer.is_server() else client_hand
 	
 	for tile in hand.get_children():
 		hand.remove_child(tile)
 
+# Show the player hands if it's their turn
 func show_hands():
 	clear_hands()
 	cur_tiles = player_tiles[0] + player_tiles[1] + player_tiles[2]
@@ -197,6 +210,7 @@ func show_hands():
 	host_hand.visible = multiplayer.is_server()
 	client_hand.visible = !multiplayer.is_server()
 
+# Serialize tile data to be sent over network
 func serialize(tile_data: Array[Tile]) -> Array[Dictionary]:
 	var result: Array[Dictionary] = []
 	
@@ -205,6 +219,7 @@ func serialize(tile_data: Array[Tile]) -> Array[Dictionary]:
 	
 	return result
 
+# Deserialize tile data received over network
 func deserialize(tile_data: Array[Dictionary]) -> Array[Tile]:
 	var result: Array[Tile] = []
 	
@@ -218,6 +233,7 @@ func deserialize(tile_data: Array[Dictionary]) -> Array[Tile]:
 	
 	return result
 
+# Called when player presses a tile in hand
 @rpc("any_peer", "reliable")
 func submit_tiles(tiles: Array[Dictionary]):
 	print("tiles submitted")
@@ -225,24 +241,29 @@ func submit_tiles(tiles: Array[Dictionary]):
 	current_move = submitted_tiles
 	
 	update_preview()
-	
+
+# Called when a new turn begins
+# Sync all player's turns
 @rpc("any_peer", "call_local", "reliable")
 func update_turn():
 	turn += 1
 	print("Current Turn:" + str(turn))
 	on_new_turn_start.emit()
 	show_hands()
-	
+
+# Sync all player's game state
 @rpc("any_peer", "reliable")
 func update_game_state(new_state: String, x_val: float = 0.0):
 	game_state = new_state
 	
 	match (game_state):
+		# Player need to decide to challenge or not
 		"VERIFY":
 			%ChallengeResult.visible = false
 			%ResponseResult.visible = false
 			%"Challenge Container".visible = true
 			emit_signal("view_board")
+		# Normal turn play
 		"PLAY":
 			if moves == 0 && opponent_moves == 0:
 				has_ended.rpc()
@@ -253,10 +274,12 @@ func update_game_state(new_state: String, x_val: float = 0.0):
 			update_preview()
 			
 			emit_signal("view_board")
+		# Player receive the score from their equation
 		"SCORE":
 			if !challenge_skipped:
 				emit_signal("view_board")
 			else:
+				move_logs.append("%s\n- x = Unknown" % current_move_eqn.replace("pow", "").replace(", ", "^"))
 				emit_signal("view_opponent")
 			
 			your_score += current_move_score
@@ -270,11 +293,13 @@ func update_game_state(new_state: String, x_val: float = 0.0):
 				has_ended.rpc()
 				emit_signal("game_end")
 				return
+		# Player equation challenged
 		"CHALLENGED":
 			$ChallengeSE.play()
 			challenge_skipped = false
 			%"Response Container".visible = true
 			emit_signal("view_board")
+		# Challenge successful
 		"SUCCESS":
 			$CorrectSE.play()
 			emit_signal("view_opponent")
@@ -294,6 +319,7 @@ func update_game_state(new_state: String, x_val: float = 0.0):
 				%ChallengeResult.visible = false
 				has_ended.rpc()
 				return
+		# Challenge failed
 		"FAIL":
 			$WrongSE.play()
 			emit_signal("view_opponent")
@@ -312,17 +338,20 @@ func update_game_state(new_state: String, x_val: float = 0.0):
 				has_ended.rpc()
 				return
 
+# Called when tile selected
 func selected(tile: Tile) -> void:
 	$SelectSE.play()
 	current_move.append(tile)
 	update_preview()
 	
+# Called when tile deselected
 func deselect(tile: Tile) -> void:
 	# var pos: int = current_move.find(tile)
 	$DeselectSE.play()
 	current_move.erase(tile)
 	update_preview()
-	
+
+# Update the equation preview in the middle of the screen
 func update_preview():
 	reset_preview()
 	
@@ -364,12 +393,14 @@ func update_preview():
 		
 		%ScorePreview.text = "MOVE SCORE: %d pts" % calculate_eqn_score()
 
+# Clear the preview
 func reset_preview():
 	%ScorePreview.text = "MOVE SCORE: %d pts" % calculate_eqn_score()
 	
 	for item in preview.get_children():
 		preview.remove_child(item)
 
+# Called when player submit their equation
 func _on_submit_btn_pressed() -> void:
 	var your_turn: bool = turn % 2 == 0 if multiplayer.is_server() else turn % 2 != 0
 	
@@ -380,6 +411,7 @@ func _on_submit_btn_pressed() -> void:
 	
 	current_move_eqn = ""
 	
+	# Player submit nothing
 	if len(current_move) == 0:
 		$ClickSE.play()
 		print("Skipped")
@@ -397,6 +429,7 @@ func _on_submit_btn_pressed() -> void:
 		
 		update_game_state.rpc("PLAY")
 		
+	# Invalid equations
 	if len(current_move) < 3:
 		$ErrorSE.play()
 		print("invalid")
@@ -407,6 +440,7 @@ func _on_submit_btn_pressed() -> void:
 	var has_eql: bool = false
 	var last_tile: Tile = null
 	
+	# Validation of equation format
 	for tile in current_move:
 		var t: Tile = tile
 		
@@ -463,6 +497,7 @@ func _on_submit_btn_pressed() -> void:
 		$ErrorSE.play()
 		print("invalid")
 
+# Once submitted, used tiles are removed and new tiles are drawn
 func remove_used_tiles(clear_preview: bool = true):
 	var bonus: int = 0
 	
@@ -493,6 +528,7 @@ func remove_used_tiles(clear_preview: bool = true):
 		
 		show_hands()
 
+# Discard tiles to draw new ones
 func _on_discard_btn_pressed() -> void:
 	var your_turn: bool = turn % 2 == 0 if multiplayer.is_server() else turn % 2 != 0
 	
@@ -517,6 +553,7 @@ func _on_discard_btn_pressed() -> void:
 		$ErrorSE.play()
 		print("Out of discards")
 
+# Calculate the score gained from the equation
 func calculate_eqn_score() -> int:
 	var tile_values: int = 0
 	var mults: int = 1
@@ -529,29 +566,34 @@ func calculate_eqn_score() -> int:
 	
 	return tile_values * mults * bingo
 
+# Called when player skip challenging an equation
 func _on_skip_challenge_btn_pressed() -> void:
 	$ClickSE.play()
 	update_game_state.rpc_id(opponent_id, "SCORE")
 	update_game_state("PLAY")
 
+# Send player's game info the all players
 @rpc("any_peer", "reliable")
 func send_player_data(cur_score: int, cur_moves: int, cur_discards: int):
 	opponent_score = cur_score
 	opponent_moves = cur_moves
 	opponent_discards = cur_discards
 
+# Called when player challenged an equation
 func _on_challenge_btn_pressed() -> void:
 	$ClickSE.play()
 	update_game_state.rpc_id(opponent_id, "CHALLENGED")
 	%"Challenge Container".visible = false
 	%ResponseWait.visible = true
 
-
+# Called when player give up proving their equation
 func _on_no_solution_pressed() -> void:
 	$WrongSE.play()
 	update_game_state.rpc_id(opponent_id, "SUCCESS")
 	%"Response Container".visible = false
 	%SolutionInput.text = ""
+	
+	move_logs.append("%s\n- x = Invalid" % current_move_eqn.replace("pow", "").replace(", ", "^"))
 	
 	send_player_data(your_score, moves, discards)
 	reset_preview()
@@ -560,7 +602,7 @@ func _on_no_solution_pressed() -> void:
 	%ResponseLost.visible = true
 	%ResponseResult.visible = true
 
-
+# Verify the proof of the equation is correct
 func _on_submit_solution_pressed() -> void:
 	var entered_val: String = %SolutionInput.text
 	
@@ -597,9 +639,11 @@ func _on_submit_solution_pressed() -> void:
 		$CorrectSE.play()
 		update_game_state.rpc_id(opponent_id, "FAIL", x_val)
 		your_score += 10
+		move_logs.append("%s\n- x = %.2f" % [current_move_eqn.replace("pow", "").replace(", ", "^"), x_val])
 		update_game_state("SCORE")
 	else:
 		$WrongSE.play()
+		move_logs.append("%s\n- x = Invalid" % current_move_eqn.replace("pow", "").replace(", ", "^"))
 		update_game_state.rpc_id(opponent_id, "SUCCESS")
 	
 	%ResponseWon.visible = lhs_res == rhs_res
@@ -609,6 +653,7 @@ func _on_submit_solution_pressed() -> void:
 	%"Response Container".visible = false
 	%SolutionInput.text = ""
 
+# Close button callback on most dialogs
 func _on_close_btn_pressed() -> void:
 	$ClickSE.play()
 	%ChallengeResult.visible = false
@@ -616,7 +661,8 @@ func _on_close_btn_pressed() -> void:
 	
 	if moves > 0:
 		update_game_state("PLAY")
-	
+
+# Triggered when the close button on a challenge response is pressed
 func _on_close_res_btn_pressed() -> void:
 	$ClickSE.play()
 	var your_turn: bool = turn % 2 == 0 if multiplayer.is_server() else turn % 2 != 0
@@ -634,9 +680,14 @@ func _on_close_res_btn_pressed() -> void:
 		emit_signal("game_end")
 		return
 
+# End the game and show the end screen
+# Calculate the final score
+# Determine the winner
 func _on_game_results_visibility_changed() -> void:
 	your_score += discards * 10
 	opponent_score += opponent_discards * 10
+	
+	update_logs()
 	
 	if your_score > opponent_score:
 		$WinSE.play()
@@ -652,14 +703,41 @@ func _on_game_results_visibility_changed() -> void:
 	%OpponentResult.text = "Opponent: %d pts" % opponent_score
 	emit_signal("game_end")
 
+# Update the move log display
+func update_logs():
+	var log_string: String = ""
+	
+	for i in range(0, len(move_logs)):
+		log_string += "%d: %s\n" % [i, move_logs[i]]
+	
+	%Moves.text = log_string
+
+# Save log as text file
+func save_logs():
+	var file_name: String = "power-plays-%s-%s-%s.txt" % [Time.get_date_string_from_system(), Time.get_unix_time_from_system(), players[player_id].name]
+	
+	var file: FileAccess = FileAccess.open("%s/%s" % [OS.get_system_dir(OS.SYSTEM_DIR_DOCUMENTS), file_name], FileAccess.WRITE)
+	
+	if file:
+		print(file.get_path())
+		file.store_string(%Moves.text)
+		file.close()
+		%SaveButton.text = "SAVED"
+		%SaveButton.disabled = true
+	else:
+		print(FileAccess.get_open_error())
+
+# If a player disconnect show the message
 func on_disconnect():
 	%GameDisconnect.visible = true
 
+# Quit button callback
 func _on_quit_pressed() -> void:
 	$ClickSE.play()
 	await $ClickSE.finished
 	disconnect_from_game.emit()
 
+# Text input number button helper functions
 func _on_num_btn_pressed(key: String) -> void:
 	$ClickSE.play()
 	var cur_val: String = %SolutionInput.text
@@ -677,6 +755,7 @@ func _on_num_btn_pressed(key: String) -> void:
 	
 	%SolutionInput.text = cur_val
 
+# Helper function for text input buttons
 func _on_delete_btn_pressed() -> void:
 	$ClickSE.play()
 	var cur_val: String = %SolutionInput.text
@@ -684,10 +763,16 @@ func _on_delete_btn_pressed() -> void:
 	
 	%SolutionInput.text = cur_val
 
+# Fade out the song in bg
 func fade_song() -> void:
 	await get_tree().create_tween().tween_property($BGM, "volume_linear", 0, 1).set_trans(Tween.TRANS_LINEAR).finished
 	emit_signal("audio_muted")
 
+# Unused. Supposed to be used for triggering player animations
 @rpc("any_peer", "call_remote", "reliable")
 func play_anim(anim_signal: String):
 	emit_signal(anim_signal)
+
+
+func _on_save_log_button_pressed() -> void:
+	save_logs()

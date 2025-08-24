@@ -7,6 +7,7 @@ var component : String = "="
 var texture_path: String = "res://assets/images/tile-eql.png"
 var type: String = "OPERATOR"
 
+# Constructor for a tile
 func _init(score_val: int = 0, tile_mult_val: int = 1, move_mult_val: int = 1, component_val: String = "=", texture_path_val: String = "res://assets/images/tile-eql.png", type_val: String = "OPERATOR"):
 	self.score = score_val
 	self.tile_mult = tile_mult_val
@@ -15,6 +16,7 @@ func _init(score_val: int = 0, tile_mult_val: int = 1, move_mult_val: int = 1, c
 	self.texture_path = texture_path_val
 	self.type = type_val
 
+# Helper to create tile from dict data
 func init_from_dict(dict: Dictionary[String, Variant]) -> void:
 	score = dict["score"]
 	tile_mult = dict["tile_mult"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3 uid="uid://b0mb0qtgcf5qw"]
+[gd_scene load_steps=37 format=3 uid="uid://b0mb0qtgcf5qw"]
 
 [ext_resource type="Script" uid="uid://cdejxwlvl71y3" path="res://scripts/Menu.gd" id="1_thu7x"]
 [ext_resource type="PackedScene" uid="uid://dtp8mvdegalnq" path="res://scenes/Room.tscn" id="1_xdvgc"]
@@ -17,6 +17,7 @@
 [ext_resource type="PackedScene" uid="uid://b51rid05ohawr" path="res://scenes/Character5.tscn" id="8_rtd1e"]
 [ext_resource type="PackedScene" uid="uid://ddn72kvkwgciy" path="res://scenes/Character6.tscn" id="9_6c8sk"]
 [ext_resource type="PackedScene" uid="uid://bibnnpwuai6x4" path="res://scenes/Character7.tscn" id="10_5p0sf"]
+[ext_resource type="FontFile" uid="uid://4dpgbyfkjvx8" path="res://assets/fonts/Tomorrow/Tomorrow-Regular.ttf" id="10_rehui"]
 [ext_resource type="PackedScene" uid="uid://cvd3blk88qadk" path="res://scenes/Character8.tscn" id="11_7t7qg"]
 [ext_resource type="PackedScene" uid="uid://dpix2sa5um08r" path="res://scenes/Character9.tscn" id="12_l3wcu"]
 [ext_resource type="FontFile" uid="uid://c3gkrvhsj8nwo" path="res://assets/fonts/Tomorrow/Tomorrow-Black.ttf" id="16_rtd1e"]
@@ -204,12 +205,41 @@ tracks/1/keys = {
 "values": [Vector3(0, 0, 0), Vector3(0, 0, 0)]
 }
 
+[sub_resource type="Animation" id="Animation_rehui"]
+resource_name = "main_window"
+length = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TransitionCam:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0.45794, 0.562578, 0.489295), Vector3(0.179708, 0.562578, -0.188519)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("TransitionCam:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 1.5708, 0)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_jmdev"]
 _data = {
 &"RESET": SubResource("Animation_o0tnf"),
 &"fade_in": SubResource("Animation_11y2r"),
 &"main_cust": SubResource("Animation_6c8sk"),
-&"main_door": SubResource("Animation_5p0sf")
+&"main_door": SubResource("Animation_5p0sf"),
+&"main_window": SubResource("Animation_rehui")
 }
 
 [node name="Menu" type="Node3D"]
@@ -308,7 +338,6 @@ theme_override_styles/normal = ExtResource("4_rtd1e")
 text = "   Change Character   "
 
 [node name="CreditsBtn" type="Button" parent="MainCamera/MainScreen/VBoxContainer"]
-visible = false
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_11y2r")
 theme_override_font_sizes/font_size = 64
@@ -342,6 +371,156 @@ grow_vertical = 2
 toggle_mode = true
 texture_normal = ExtResource("7_760fv")
 texture_pressed = ExtResource("8_rehui")
+
+[node name="CreditsCamera" type="Camera3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.179708, 0.562578, -0.188519)
+
+[node name="CreditsScreen" type="Control" parent="CreditsCamera"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CreditsCamera/CreditsScreen"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CreditsCamera/CreditsScreen/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Label" type="Label" parent="CreditsCamera/CreditsScreen/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_2af52")
+theme_override_font_sizes/font_size = 48
+text = "CREDITS"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="CreditsCamera/CreditsScreen/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CreditsCamera/CreditsScreen/MarginContainer/VBoxContainer/ScrollContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Header" type="Label" parent="CreditsCamera/CreditsScreen/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_2af52")
+theme_override_font_sizes/font_size = 32
+text = "KEDAH MATRICULATION COLLEGE (KMK)"
+
+[node name="Name" type="Label" parent="CreditsCamera/CreditsScreen/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("10_rehui")
+theme_override_font_sizes/font_size = 32
+text = "- Siti Maisarah binti Ahmad Saarani"
+
+[node name="Name2" type="Label" parent="CreditsCamera/CreditsScreen/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("10_rehui")
+theme_override_font_sizes/font_size = 32
+text = "- Affaf binti Mohamad @ Md Yusoff"
+
+[node name="Name3" type="Label" parent="CreditsCamera/CreditsScreen/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("10_rehui")
+theme_override_font_sizes/font_size = 32
+text = "- Oh Siew Choo"
+
+[node name="Name4" type="Label" parent="CreditsCamera/CreditsScreen/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("10_rehui")
+theme_override_font_sizes/font_size = 32
+text = "- Siti Rahmah binti Ramly"
+
+[node name="Name5" type="Label" parent="CreditsCamera/CreditsScreen/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("10_rehui")
+theme_override_font_sizes/font_size = 32
+text = "- Sitti Noor Huzayfah binti M Hafas"
+
+[node name="Name6" type="Label" parent="CreditsCamera/CreditsScreen/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("10_rehui")
+theme_override_font_sizes/font_size = 32
+text = "- Khairunnisa Akmal binti Abdl Azid"
+
+[node name="Header2" type="Label" parent="CreditsCamera/CreditsScreen/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_2af52")
+theme_override_font_sizes/font_size = 32
+text = "QLYCO"
+
+[node name="Name7" type="Label" parent="CreditsCamera/CreditsScreen/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("10_rehui")
+theme_override_font_sizes/font_size = 32
+text = "- Developer: dfx"
+
+[node name="Name8" type="Label" parent="CreditsCamera/CreditsScreen/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("10_rehui")
+theme_override_font_sizes/font_size = 32
+text = "- Tester: Ammar Azizan, Adam Amir"
+
+[node name="Header3" type="Label" parent="CreditsCamera/CreditsScreen/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_2af52")
+theme_override_font_sizes/font_size = 32
+text = "ATTRIBUTIONS"
+
+[node name="Name9" type="Label" parent="CreditsCamera/CreditsScreen/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("10_rehui")
+theme_override_font_sizes/font_size = 32
+text = "- 3D Assets: Kenneys (kenney.nl)"
+
+[node name="Name10" type="Label" parent="CreditsCamera/CreditsScreen/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("10_rehui")
+theme_override_font_sizes/font_size = 32
+text = "- BGM: DOVA-SYNDROME (dova-s.jp)"
+
+[node name="Name11" type="Label" parent="CreditsCamera/CreditsScreen/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("10_rehui")
+theme_override_font_sizes/font_size = 32
+text = "- SFX: DOVA-SYNDROME (dova-s.jp), Kenneys (kenney.nl)"
+
+[node name="Name12" type="Label" parent="CreditsCamera/CreditsScreen/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("10_rehui")
+theme_override_font_sizes/font_size = 32
+text = "- Additional 2D Assets: Kenneys (kenney.nl)"
+
+[node name="CloseCreditsBtn" type="Button" parent="CreditsCamera/CreditsScreen/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_11y2r")
+theme_override_font_sizes/font_size = 48
+theme_override_styles/focus = ExtResource("4_rtd1e")
+theme_override_styles/disabled_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/disabled = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover_pressed = ExtResource("4_rtd1e")
+theme_override_styles/hover_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/hover = ExtResource("4_rtd1e")
+theme_override_styles/pressed_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/pressed = ExtResource("4_rtd1e")
+theme_override_styles/normal_mirrored = ExtResource("4_rtd1e")
+theme_override_styles/normal = ExtResource("4_rtd1e")
+text = "BACK"
 
 [node name="CustomizeCamera" type="Camera3D" parent="."]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0.724749, 0.43158, 0.0267154)
@@ -1293,6 +1472,7 @@ stream = ExtResource("22_dek3k")
 [connection signal="pressed" from="MainCamera/MainScreen/VBoxContainer/CustomizeBtn" to="." method="_on_customize_btn_pressed"]
 [connection signal="pressed" from="MainCamera/MainScreen/VBoxContainer/CreditsBtn" to="." method="_on_credits_btn_pressed"]
 [connection signal="pressed" from="MainCamera/MainScreen/AudioToggle" to="." method="_on_audio_toggle_pressed"]
+[connection signal="pressed" from="CreditsCamera/CreditsScreen/MarginContainer/VBoxContainer/CloseCreditsBtn" to="." method="_on_close_credits_btn_pressed"]
 [connection signal="pressed" from="CustomizeCamera/CustomizeScreen/HBoxContainer/PrevBtn" to="." method="_on_prev_btn_pressed"]
 [connection signal="pressed" from="CustomizeCamera/CustomizeScreen/HBoxContainer/ConfirmCharBtn" to="." method="_on_confirm_char_btn_pressed"]
 [connection signal="pressed" from="CustomizeCamera/CustomizeScreen/HBoxContainer/NextBtn" to="." method="_on_next_btn_pressed"]

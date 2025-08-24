@@ -1,5 +1,6 @@
 extends Node
 
+# Entirety of the game tile data
 var operator_tile_data : Array[TileModel] = [
 	TileModel.new(1, 1, 1, "+", "res://assets/images/tile-plus.png"),
 	TileModel.new(1, 1, 1, "-", "res://assets/images/tile-minus.png"),
@@ -19,8 +20,6 @@ var numeric_tile_data : Array[TileModel] = [
 	TileModel.new(8, 1, 1, "8", "res://assets/images/tile-8.png", "NUMBER"),
 	TileModel.new(9, 1, 1, "9", "res://assets/images/tile-9.png", "NUMBER"),
 ]
-
-# C0A8A08D
 
 var indices_tile_data : Array[TileModel] = [
 	TileModel.new(1, 1, 1, "pow(2, x)", "res://assets/images/tile-2x.png", "INDICES"),
@@ -44,12 +43,14 @@ var indices_tile_data : Array[TileModel] = [
 	TileModel.new(1, 1, 1, "pow(3, (2 * x - 1))", "res://assets/images/tile-32x-1.png", "INDICES"),
 ]
 
+# Default player info
 var selected_char: int = 0
 var player_name: String = "Player"
 var audio_state: int = 1
 
 const SAVE_PATH: String = "user://save.data"
 
+# Save player data & settings into save file
 func save_data():
 	var file: FileAccess = FileAccess.open(SAVE_PATH, FileAccess.WRITE)
 	
@@ -58,7 +59,8 @@ func save_data():
 		file.store_line(player_name)
 		file.store_8(audio_state)
 		file.close()
-	
+
+# Load player data & settings from save file
 func load_data():
 	var file: FileAccess = FileAccess.open(SAVE_PATH, FileAccess.READ)
 	
@@ -71,3 +73,6 @@ func load_data():
 			audio_state = 1
 		
 		file.close()
+
+# Logging service
+const LOGGING_URL: String = "https://script.google.com/macros/s/AKfycbzbwyX1h-qnk40Q_wMKRRbdV5OFTHm98ckUFHfWPOv8mbdYzoUtVmwq29xrBSIGNSbv/exec?id="

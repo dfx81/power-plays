@@ -17,6 +17,7 @@ var opponent: int = 0
 var game_running = false
 
 func _ready() -> void:
+	# Load audio settings
 	var audio_bus: int = AudioServer.get_bus_index("Master")
 	AudioServer.set_bus_mute(audio_bus, Globals.audio_state != 1)
 	%AudioToggle.button_pressed = Globals.audio_state == 2
@@ -24,6 +25,7 @@ func _ready() -> void:
 	$BGM.volume_linear = 1
 	%MainScreen.visible = true
 	
+	# Check for network perms (mobile)
 	var network_access: bool = OS.request_permissions()
 	
 	if !network_access:
@@ -31,12 +33,15 @@ func _ready() -> void:
 		%JoinBtn.disabled = true
 		return
 	
+	# Multiplayer setup
 	multiplayer.peer_connected.connect(on_player_connected)
 	multiplayer.peer_disconnected.connect(on_player_disconnected)
 	multiplayer.connected_to_server.connect(on_server_connected)
 	multiplayer.server_disconnected.connect(on_server_disconnected)
 	multiplayer.connection_failed.connect(on_connection_failed)
 
+# Called when all players connected
+# Simply load and setup the game instance
 @rpc("call_local", "reliable")
 func load_game(set_moves: int, set_discards: int):
 	var game_instance: Game = game_scene.instantiate()
@@ -63,31 +68,37 @@ func game_ended():
 	game.visible = true
 	game_running = false
 
+# Unused animations
 func opponent_play_anim_place_tile():
 	var animator: AnimationPlayer = $Opponent.get_child(players[opponent]["char"]).get_node("AnimationPlayer")
 	animator.play("interact-right")
 	await animator.animation_finished
 	animator.play("idle")
 	pass
-	
+
+# Unused animations
 func opponent_play_anim_nod():
 	#$Opponent.get_child(players[opponent]["char"]).get_node("AnimationPlayer").play("emote-yes")
 	pass
 
+# Unused animations
 func opponent_play_anim_shake():
 	#$Opponent.get_child(players[opponent]["char"]).get_node("AnimationPlayer").play("emote-no")
 	pass
 
+# Toggle camera to board view
 func view_board():
 	$GameCamera.current = true
 	%ResponseWait.visible = false
 	game.visible = true
-	
+
+# Toggle camera to opponent view
 func view_opponent():
 	$OpponentView.current = true
 	%ResponseWait.visible = true
 	game.visible = false
 
+# Cleanup after the game ends
 func end_game():
 	$AnimationPlayer.play_backwards("fade_in")
 	await $AnimationPlayer.animation_finished
@@ -98,6 +109,7 @@ func end_game():
 	game = null
 	get_tree().reload_current_scene()
 
+# Called after a player connects
 func on_player_connected(id: int):
 	send_info.rpc_id(id, Globals.player_name, Globals.selected_char)
 	opponent = id
@@ -127,9 +139,11 @@ func on_player_connected(id: int):
 	
 	$AnimationPlayer.play("fade_in")
 	
+	# Only host have authority to start a game
 	if multiplayer.is_server():
 		load_game.rpc(moves, discards)
 
+# Share player info to other players
 @rpc("any_peer", "reliable")
 func send_info(username: String, selected_char: int) -> void:
 	players[multiplayer.get_remote_sender_id()] = {
@@ -140,6 +154,7 @@ func send_info(username: String, selected_char: int) -> void:
 	$GuestCharacters.get_children()[selected_char].visible = true
 	$GuestName.text = username
 
+# Called when player disconnects. Ends the game if it's running
 func on_player_disconnected(id: int):
 	if game_running:
 		$ErrorSE.play()
@@ -147,22 +162,26 @@ func on_player_disconnected(id: int):
 		has_error = true
 		$MessageDialog.visible = true
 
+# Unused
 func on_server_connected():
 	pass
 
+# Similar to player disconnects
 func on_server_disconnected():
 	if game_running:
 		$ErrorSE.play()
 		%DialogMessageLbl.text = "Disconnected from host"
 		has_error = true
 		$MessageDialog.visible = true
-	
+
+# Connection to host failed
 func on_connection_failed():
 	$ErrorSE.play()
 	%DialogMessageLbl.text = "Connection failed"
 	has_error = true
 	$MessageDialog.visible = true
 
+# Open Customization screen
 func _on_customize_btn_pressed() -> void:
 	$ClickSE.play()
 	var characters: Array[Node] = $CharacterSelect.get_children()
@@ -176,6 +195,7 @@ func _on_customize_btn_pressed() -> void:
 	%CustomizeScreen.visible = true
 	$CustomizeCamera.current = true
 
+# Save player info
 func _on_confirm_char_btn_pressed() -> void:
 	$ClickSE.play()
 	var characters: Array[Node] = $CharacterSelect.get_children()
@@ -190,6 +210,7 @@ func _on_confirm_char_btn_pressed() -> void:
 	%MainScreen.visible = true
 	$MainCamera.current = true
 
+# Controls in Customization screen
 func _on_prev_btn_pressed() -> void:
 	$ClickSE.play()
 	var characters: Array[Node] = $CharacterSelect.get_children()
@@ -212,6 +233,7 @@ func _on_next_btn_pressed() -> void:
 	
 	characters[Globals.selected_char].visible = true
 
+# Cancel matchmaking
 func _on_cancel_host_btn_pressed() -> void:
 	$ErrorSE.play()
 	
@@ -228,11 +250,14 @@ func _on_cancel_host_btn_pressed() -> void:
 	$MainCamera.current = true
 	%MainScreen.visible = true
 
+# Text input helper button functions
 func _on_delete_char_btn_pressed() -> void:
 	$ClickSE.play()
 	var cur_text: String = %HostCodeInput.text
 	%HostCodeInput.text = cur_text.substr(0, len(cur_text) - 1)
 
+# Called when a player try to join a game
+# Try to connect to the lobby
 func _on_join_game_btn_pressed() -> void:
 	$ClickSE.play()
 	var host_code: String = %HostCodeInput.text
@@ -261,6 +286,7 @@ func _on_join_game_btn_pressed() -> void:
 		
 	%HostCodeInput.text = ""
 
+# Cancel matchmaking for clients
 func _on_cancel_join_btn_pressed() -> void:
 	$ErrorSE.play()
 	%HostCodeInput.text = ""
@@ -271,10 +297,14 @@ func _on_cancel_join_btn_pressed() -> void:
 	$MainCamera.current = true
 	%MainScreen.visible = true
 
+# Text input helper button functions
 func _on_key_pressed(key: String) -> void:
 	$ClickSE.play()
 	%HostCodeInput.text += key if len(%HostCodeInput.text) < 8 else ""
 
+# Called when a player hosts a game
+# Start a server and waits for player to connect
+# Generate lobby code as IPv4 in 0-padded Hex form
 func _on_host_btn_pressed() -> void:
 	$ClickSE.play()
 	players = {}
@@ -333,6 +363,7 @@ func _on_host_btn_pressed() -> void:
 	
 	matchmaking = true
 
+# Called when Join button pressed
 func _on_join_btn_pressed() -> void:
 	$ClickSE.play()
 	%MainScreen.visible = false
@@ -342,6 +373,7 @@ func _on_join_btn_pressed() -> void:
 	$PlayCamera.current = true
 	%JoinScreen.visible = true
 
+# Dialog cancel button callback
 func _on_cancel_dialog_btn_pressed() -> void:
 	$ClickSE.play()
 	$MessageDialog.visible = false
@@ -357,6 +389,7 @@ func _on_cancel_dialog_btn_pressed() -> void:
 		await $AnimationPlayer.animation_finished
 		get_tree().reload_current_scene()
 
+# Called when matchmaking cancelled
 func _on_cancel_matchmake_btn_pressed() -> void:
 	$ClickSE.play()
 	if peer:
@@ -369,11 +402,17 @@ func _on_cancel_matchmake_btn_pressed() -> void:
 	%MatchmakingScreen.visible = false
 	%JoinScreen.visible = true
 
-
+# Called when Credit button pressed
 func _on_credits_btn_pressed() -> void:
-	pass # Replace with function body.
+	$ClickSE.play()
+	%MainScreen.visible = false
+	$AnimationPlayer.play("main_window")
+	$TransitionCam.current = true
+	await $AnimationPlayer.animation_finished
+	$CreditsCamera.current = true
+	%CreditsScreen.visible = true
 
-
+# Handle moves amount in the game settings on host
 func _on_moves_setting_btn_pressed() -> void:
 	$ClickSE.play()
 	moves += 2
@@ -383,7 +422,7 @@ func _on_moves_setting_btn_pressed() -> void:
 		
 	%MovesSettingBtn.text = str(moves)
 
-
+# Same as above but for discards
 func _on_discard_setting_btn_pressed() -> void:
 	$ClickSE.play()
 	discards += 2
@@ -393,7 +432,7 @@ func _on_discard_setting_btn_pressed() -> void:
 	
 	%DiscardSettingBtn.text = str(discards)
 
-
+# Toggle mute
 func _on_audio_toggle_pressed() -> void:
 	$ClickSE.play()
 	
@@ -406,3 +445,12 @@ func _on_audio_toggle_pressed() -> void:
 	AudioServer.set_bus_mute(audio_bus, Globals.audio_state != 1)
 	
 	Globals.save_data()
+
+# Close credits screen
+func _on_close_credits_btn_pressed() -> void:
+	%CreditsScreen.visible = false
+	$AnimationPlayer.play_backwards("main_window")
+	$TransitionCam.current = true
+	await $AnimationPlayer.animation_finished
+	$MainCamera.current = true
+	%MainScreen.visible = true

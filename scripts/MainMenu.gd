@@ -1,3 +1,6 @@
+# UNUSED FILE
+# LEFTOVER FROM OLD SCRABBLE INTERFACE
+
 extends Node2D
 
 @export var menu_camera : Camera2D
@@ -22,6 +25,7 @@ func _ready() -> void:
 		%HostBtn.disabled = true
 		%JoinBtn.disabled = true
 	
+	# Multiplayer setup
 	peer = ENetMultiplayerPeer.new()
 	multiplayer.peer_connected.connect(on_player_connected)
 	multiplayer.peer_disconnected.connect(on_player_disconnected)
@@ -30,10 +34,13 @@ func _ready() -> void:
 	multiplayer.connection_failed.connect(on_connection_failed)
 
 func _process(_delta: float) -> void:
+	# Check if all players are connected
+	# Then start the game
 	if matchmaking and len(players.keys()) == 2 && multiplayer.is_server():
 		matchmaking = false
 		load_game.rpc()
 
+# Host prompt all players to load the game
 @rpc("call_local", "reliable")
 func load_game():
 	var game_instance: Game = game_scene.instantiate()
@@ -42,12 +49,15 @@ func load_game():
 	%GameLayer.add_child(game_instance, true)
 	game = game_instance
 
+# Cleanup after the game ends for any reason
 func end_game():
 	game.queue_free()
 	multiplayer.multiplayer_peer = null
 	game = null
 	get_tree().reload_current_scene()
 
+# Host the game
+# Generate a lobby code, which is just IPv4 address in 0-padded Hex form.
 func _on_host_btn_pressed() -> void:
 	var address: String
 

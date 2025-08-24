@@ -1,3 +1,4 @@
+# Tile representation in game's interface
 class_name Tile extends Control
 
 var data : TileModel
@@ -12,6 +13,7 @@ var deselect_callback : Callable
 var has_bonus: bool = false
 var enabled: bool = false
 
+# Render the tile based on the bonus applied
 func _process(_delta: float) -> void:
 	texture.texture = load(data.texture_path)
 	%TileGraphic.self_modulate = Color.WHITE
@@ -32,19 +34,24 @@ func _process(_delta: float) -> void:
 	%Mult.text = "X%d" % data.move_mult
 	%Value.text = "+%d" % (data.score * data.tile_mult)
 
+# Callbacks when a tile selected or deselected
 func set_callbacks(select_cb: Callable, deselect_cb: Callable) -> void:
 	selected_callback = select_cb
 	deselect_callback = deselect_cb
 
+# Disable/Enable interactions
 func toggle_tiles(enable: bool):
 	enabled = enable
 
+# Show highlight when interacting with mouse
 func _on_tile_graphic_mouse_entered() -> void:
 	hover_highlight.visible = true
 
+# Hide highlight
 func _on_tile_graphic_mouse_exited() -> void:
 	hover_highlight.visible = false
 
+# Play the corresponding callbacks when tile selected or deselected
 func _gui_input(event: InputEvent) -> void:
 	if !enabled:
 		return
@@ -61,9 +68,11 @@ func _gui_input(event: InputEvent) -> void:
 			animator.play("selected" if selected else "deselect")
 			await animator.animation_finished
 
+# Get the tile as string
 func _to_string() -> String:
 	return data.component
 
+# Convert the tile data to serialized data to send over the network
 func serialize() -> Dictionary[String, Variant]:
 	var result: Dictionary[String, Variant] = {
 		"score": data.score,

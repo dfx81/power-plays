@@ -273,5 +273,7 @@ color = Color(0, 0, 0, 0)
 stream = ExtResource("7_mh4yb")
 autoplay = true
 
+[node name="HTTPRequest" type="HTTPRequest" parent="."]
+
 [connection signal="gui_input" from="Control" to="." method="_on_control_gui_input"]
 [connection signal="animation_finished" from="SplashPlayer" to="." method="_on_splash_player_animation_finished"]
